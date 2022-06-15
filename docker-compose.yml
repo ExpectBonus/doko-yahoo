@@ -22,10 +22,11 @@ services:
   front:
     build:
       context: ./front
+      dockerfile: Dockerfile
     command: 'sh /app/start.sh'
     volumes:
-      - ./front:/app/:cached
-      - ./front/node_modules:/app/node_modules
+      - ./front/doko-yahoo:/app/:cached
+      - ./front/doko-yahoo/node_modules:/app/node_modules
     ports:
       - "8080:8080"
 
