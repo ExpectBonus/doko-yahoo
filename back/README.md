@@ -23,7 +23,7 @@ docker logs CONTAINER_ID
 ```
 
 ## 今のところ実装してる機能
-- データベーススキーマはできた
+### ユーザ関連
 - ユーザ情報の登録
 試しにコマンドラインで
 ```
@@ -54,23 +54,41 @@ curl localhost:5000/user/1
 ```
 でそのIDのユーザが削除できるので、もう一回参照してみると今度は user does not exist と出るはず
 
-## まだ実装していない機能
+### 都道府県別コメント関連
+- コメントの投稿
+```
+curl -X 'POST' \
+  'localhost:5000/comments/47' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": 1,
+  "comment": "この県こそが至高"
+}'
+```
+- コメントの取得
+```
+curl localhost:5000/comments/47
+```
+### ヒートマップ関連
 - ヒートマップの取得
-- 都道府県別コメント
-
-これらをそれぞれ 
-
-- controllers/heatmap_controller.py 
-- controllers/comment_controller.py
-
-に実装したい
-
-ユーザ関連の機能はcontrollers/user_controller.py に実装しているので、それが参考になる
-
-加えてmodels/models.pyにデータベースの定義があるので、DB操作時にはそれも参考になる
+```
+curl localhost:5000/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobbies=ピアノ
+```
 
 ## 参考情報
-- ユーザ関連の機能の実装はcontrollers/user_controller.py にある
+- controllersに各エンドポイントを実装
+  - ユーザ関連はcontrollers/user_controller.py
+  - コメント関連はcontrollers/comment_controller.py
+  - ヒートマップ関連はcontrollers/heatmap_controller.py
 - models/models.pyにデータベースの定義がある
 - データベース操作にはSQLAlchemyというライブラリを使っているので
   - SQLAlchemy flask などで調べると機能がいろいろ分かる
+
+## これからやりたいこと
+- 即席なのでたぶんバグはある
+  - いろんなケースを自分たちで試しつつ、自動テストを書きたい
+- 開発と本番で設定を分ける記述が欲しい
+- 動作の最適化
+  - ヒートマップの取得はforループを使わざるを得なかったりしている
+- あったらフロント的に便利そうなAPIを生やす
