@@ -13,9 +13,8 @@ app.config.from_object('config.Config')
 init_db(app)
 
 app.register_blueprint(user_blueprint)
-
-#app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@db:5432/postgres"
-
+app.register_blueprint(comment_blueprint)
+app.register_blueprint(heatmap_blueprint)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')

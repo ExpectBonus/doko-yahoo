@@ -1,6 +1,7 @@
 from db import db
 from datetime import datetime
 
+# ユーザ情報
 class User(db.Model):
 
     __tablename__ = 'users'
@@ -14,6 +15,7 @@ class User(db.Model):
     second_pref = db.Column(db.Integer)
     third_pref = db.Column(db.Integer)
 
+# 趣味の一覧
 class Hobby(db.Model):
 
     __tablename__ = 'hobbies'
@@ -21,6 +23,7 @@ class Hobby(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
 
+# 各ユーザの趣味
 class UserHobby(db.Model):
 
     __tablename__ = 'user_hobbies'
@@ -29,7 +32,8 @@ class UserHobby(db.Model):
     user_id = db.Column(db.Integer, nullable=False)
     hobby_id = db.Column(db.Integer, nullable=False)
 
-class Comments(db.Model):
+# 都道府県へのコメント
+class Comment(db.Model):
 
     __tablename__ = 'comments'
 
