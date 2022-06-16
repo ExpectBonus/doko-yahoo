@@ -3,7 +3,7 @@ APIを今回みたいに柔軟に書きたいときはDjangoはかえって面�
 (単純なデータの生成・削除・検索機能の自動生成には強いみたい)
 
 そこでFlaskで書いてみたらこっちの方が効率は良かった
-Postgreとの接続もできている
+Postgreとの接続、6/17現在Swaggerに定義しているAPIの実装は一通りした
 
 ## 使い方
 ### 起動方法
@@ -76,8 +76,8 @@ curl localhost:5000/comments/47
 curl localhost:5000/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobbies=ピアノ
 ```
 
-## 参考情報
-- controllersに各エンドポイントを実装
+## 実装するうえで参考になる情報
+- controllersに各エンドポイントを実装している
   - ユーザ関連はcontrollers/user_controller.py
   - コメント関連はcontrollers/comment_controller.py
   - ヒートマップ関連はcontrollers/heatmap_controller.py
@@ -90,5 +90,5 @@ curl localhost:5000/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobb
   - いろんなケースを自分たちで試しつつ、自動テストを書きたい
 - 開発と本番で設定を分ける記述が欲しい
 - 動作の最適化
-  - ヒートマップの取得はforループを使わざるを得なかったりしている
-- あったらフロント的に便利そうなAPIを生やす
+  - ヒートマップの取得はforループを使わざるを得なかったりしているので、もっと速いに越したことはない
+- (余裕があれば)あったらフロント的に便利そうなAPIを生やす

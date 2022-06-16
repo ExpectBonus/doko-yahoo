@@ -25,15 +25,18 @@ def post_user_handler():
         user = User.query.filter(User.provider_id==request.json["provider_id"]).first()
 
         for h in request.json["hobbies"]:
+            # 新しい趣味があればhobbiesに追加
             hobby = Hobby.query.filter(Hobby.name==h).first()
             if hobby == None:
                 new_hobby = Hobby(name=h)
                 db.session.add(new_hobby)
                 db.session.commit()
                 hobby = Hobby.query.filter(Hobby.name==h).first()
+            # ユーザの趣味リスト登録
             new_user_hobby = UserHobby(user_id=user.id,hobby_id=hobby.id)
             db.session.add(new_user_hobby)
             db.session.commit()
+        # PostUserResponse
         return jsonify({
             "id": user.id
         })
@@ -49,17 +52,23 @@ def post_user_handler():
         db.session.commit()
 
         for h in request.json["hobbies"]:
+            # 新しい趣味があればhobbiesに追加
             hobby = Hobby.query.filter(Hobby.name==h).first()
             if hobby == None:
                 new_hobby = Hobby(name=h)
                 db.session.add(new_hobby)
                 db.session.commit()
                 hobby = Hobby.query.filter(Hobby.name==h).first()
+            # ユーザの趣味リスト登録
             user_hobby = UserHobby.query.filter(UserHobby.hobby_id==hobby.id,UserHobby.user_id==user.id).first()
             if user_hobby==None:
                 new_user_hobby = UserHobby(user_id=user.id,hobby_id=hobby.id)
                 db.session.add(new_user_hobby)
                 db.session.commit()
+        # TODO: request.json["hobbies"]にないがそのユーザの趣味として登録されているもの
+        #       (かつては趣味だったが今は違うもの)の削除
+
+        # PostUserResponse
         return jsonify({
             "id": user.id
         })
@@ -79,6 +88,7 @@ def get_delete_user_handler(id):
             .filter(UserHobby.user_id==user.id)\
             .all()
 
+        # GetUserResponse
         return jsonify({
             "id": user.id,
             "username": user.username,
@@ -91,6 +101,7 @@ def get_delete_user_handler(id):
         })
     else:
         user_id = int(id)
+        # users, user_hobbies, commentsから該当するユーザのものを削除
         UserHobby.query.filter(UserHobby.user_id==user_id).delete()
         User.query.filter(User.id==user_id).delete()
         Comment.query.filter(Comment.user_id==user_id).delete()

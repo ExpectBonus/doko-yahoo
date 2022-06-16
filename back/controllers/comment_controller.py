@@ -19,6 +19,7 @@ def comment_handler(pref_id):
             .with_entities(Comment.comment, User.job, User.born_pref)\
             .filter(Comment.pref==pref_id)\
             .all()
+        # GetCommentsResponse
         return jsonify({
             "comments": list(map(
                 lambda x: { 

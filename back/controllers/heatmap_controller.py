@@ -38,6 +38,7 @@ def heatmap_handler(job):
         return "Invalid job", 400
 
 
+    # 集計したユーザの希望都道府県の値を増やしていく
     data = [0 for _ in range(47)]
     for user in users:
         if user.second_pref==None:
@@ -49,7 +50,12 @@ def heatmap_handler(job):
             data[user.first_pref-1] += 3
             data[user.second_pref-1] += 2
             data[user.third_pref-1] += 1
+    
+    # 最大値を1に
+    data_max = max(data)
+    data = list(map(lambda x: float(x)/data_max,data))
 
+    # GetHeatmapResponse
     return jsonify({
         "data": data
     }) 
