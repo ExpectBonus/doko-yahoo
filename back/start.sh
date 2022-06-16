@@ -1,6 +1,6 @@
 #!/bin/bash
-sleep 5
-python manage.py makemigrations
-python manage.py migrate
-python manage.py collectstatic --noinput
-uwsgi --socket :8001 --module back.wsgi
+flask db migrate
+flask db upgrade
+uwsgi --http 0.0.0.0:5000 --buffer-size=32768 --module app:app
+# プロダクションコードではsockerにすべき?-> uwsgi --socket 0.0.0.0:5000 --buffer-size=32768 --module app:app
+

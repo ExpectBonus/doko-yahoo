@@ -37,7 +37,9 @@ services:
       dockerfile: Dockerfile
     command: 'sh /server/start.sh'
     expose:
-      - "8001"
+      - 5000
+    ports:
+      - 5000:5000
     volumes:
       - ./back:/server/
     environment:
