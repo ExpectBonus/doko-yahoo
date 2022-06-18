@@ -5,7 +5,7 @@ module.exports = defineConfig({
     port: 8080,
     proxy: {
       "^/api/": {
-        target: "http://localhost:5001",
+        target: "http://doko-yahoo_back_1:5001",
         changeOrigin: true,
         pathRewrite: { "^/api/": "/api/" },
         logLevel: "debug",
