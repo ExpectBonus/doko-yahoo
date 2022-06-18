@@ -6,7 +6,7 @@ from db import db
 from sqlalchemy import select, func
 
 # heatmapカテゴリのエンドポイント定義
-heatmap_blueprint = Blueprint('heatmap', __name__, url_prefix="/heatmap")
+heatmap_blueprint = Blueprint('heatmap', __name__, url_prefix="/api/heatmap")
 
 # ヒートマップの取得
 @heatmap_blueprint.route('/<string:job>', methods=['GET'])

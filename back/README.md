@@ -27,7 +27,7 @@ docker logs CONTAINER_ID
 - ユーザ情報の登録
 試しにコマンドラインで
 ```
-curl -X 'POST'   'localhost:5000/user/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+curl -X 'POST'   'localhost:5001/user/'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "provider_id": "some_id_from_google_or_something",
   "username": "ほげほげ",
   "job": "engineer",
@@ -45,12 +45,12 @@ curl -X 'POST'   'localhost:5000/user/'   -H 'accept: application/json'   -H 'Co
 を投げてみると {"id": 1} みたいなユーザIDが返ってくるはず
 - ユーザ情報の参照
 ```
-curl localhost:5000/user/some_id_from_google_or_something
+curl localhost:5001/user/some_id_from_google_or_something
 ```
 を投げればさっき登録したユーザの情報が出るはず
 - ユーザ情報の削除
 ```
-curl localhost:5000/user/1
+curl localhost:5001/user/1
 ```
 でそのIDのユーザが削除できるので、もう一回参照してみると今度は user does not exist と出るはず
 
@@ -58,7 +58,7 @@ curl localhost:5000/user/1
 - コメントの投稿
 ```
 curl -X 'POST' \
-  'localhost:5000/comments/47' \
+  'localhost:5001/comments/47' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -68,12 +68,12 @@ curl -X 'POST' \
 ```
 - コメントの取得
 ```
-curl localhost:5000/comments/47
+curl localhost:5001/comments/47
 ```
 ### ヒートマップ関連
 - ヒートマップの取得
 ```
-curl localhost:5000/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobbies=ピアノ
+curl localhost:5001/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobbies=ピアノ
 ```
 
 ## 実装するうえで参考になる情報

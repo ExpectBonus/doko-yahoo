@@ -4,7 +4,7 @@ from models.models import *
 from db import db
 
 # commentカテゴリのエンドポイント定義
-comment_blueprint = Blueprint('comments', __name__, url_prefix="/comments")
+comment_blueprint = Blueprint('comments', __name__, url_prefix="/api/comments")
 
 # GET /comments/{pref_id} と POST /comments/{pref_id}
 @comment_blueprint.route('/<int:pref_id>', methods=['GET','POST'])
