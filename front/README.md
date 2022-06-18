@@ -1,24 +1,20 @@
-# doko-yahoo
+# doko-yahoo/front
 
-## Project setup
-```
-npm install
-```
+Vue.js でフロントを構築する．
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## How to use
 
-### Compiles and minifies for production
+### start developing
+
 ```
-npm run build
+docker-compose build front
+docker-compose up -d front
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Enter to Docker shell
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+新しいライブラリなど入れるときは必ず Docker コンテナ内のシェルから実行．
+
+```
+docker-compose run --rm front sh
+```
