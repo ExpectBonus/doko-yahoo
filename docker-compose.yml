@@ -4,6 +4,7 @@ services:
 
   # フロント(本番環境)
   web:
+    container_name: doko-yahoo_web_1
     build:
       context: ./
       dockerfile: ./web/Dockerfile
@@ -20,6 +21,7 @@ services:
   
   # フロント(開発環境)
   front:
+    container_name: doko-yahoo_front_1
     build:
       context: ./front
       dockerfile: Dockerfile
@@ -32,6 +34,7 @@ services:
 
   # バックエンド
   back:
+    container_name: doko-yahoo_back_1
     build:
       context: ./back
       dockerfile: Dockerfile
