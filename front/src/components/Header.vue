@@ -1,11 +1,9 @@
 <template>
-	<v-main></v-main>
+	<v-app-bar></v-app-bar>
 </template>
 
 <script>
 	export default {
-		name: "MapView",
+		name: "Header",
 	};
 </script>
-
-<style scoped></style>
