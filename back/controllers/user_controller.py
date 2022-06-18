@@ -4,7 +4,7 @@ from models.models import *
 from db import db
 
 # userカテゴリのエンドポイント定義
-user_blueprint = Blueprint('user', __name__, url_prefix="/user")
+user_blueprint = Blueprint('user', __name__, url_prefix="/api/user")
 
 # POST /user/
 @user_blueprint.route('/', methods=['POST'])

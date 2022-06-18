@@ -36,10 +36,8 @@ services:
       context: ./back
       dockerfile: Dockerfile
     command: 'sh /server/start.sh'
-    expose:
-      - 5000
     ports:
-      - 5000:5000
+      - 5001:5001
     volumes:
       - ./back:/server/
     environment:
