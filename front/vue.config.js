@@ -1,5 +1,6 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
+  chainWebpack: (config) => config.resolve.symlinks(false),
   transpileDependencies: ["vuetify"],
   devServer: {
     port: 8080,
