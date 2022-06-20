@@ -46,5 +46,5 @@ def comment_handler(pref_id):
         db.session.add(new_comment)
         db.session.commit()
         
-        return "Successful operation", 200
+        return "Successful operation", 201
         
