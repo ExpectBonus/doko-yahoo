@@ -84,7 +84,7 @@ def post_user_handler():
         # PostUserResponse
         return jsonify({
             "id": user.id
-        })
+        }), 201
 
 # GET /user/{provider_id} と DELETE /user/{user_id}
 @user_blueprint.route('/<string:id>', methods=['GET','DELETE'])
