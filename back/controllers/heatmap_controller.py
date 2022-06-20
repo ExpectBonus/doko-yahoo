@@ -53,7 +53,8 @@ def heatmap_handler(job):
     
     # 最大値を1に
     data_max = max(data)
-    data = list(map(lambda x: float(x)/data_max,data))
+    if data_max != 0:
+        data = list(map(lambda x: float(x)/data_max,data))
 
     # GetHeatmapResponse
     return jsonify({
