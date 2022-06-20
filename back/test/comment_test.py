@@ -81,7 +81,7 @@ def test_get_comment(app):
     assert len(response.json["comments"]) == 3
 
     for comment in response.json["comments"]:
-        assert comment in {
+        assert comment in [
             {
                 "comment": "この県こそ至高。異論は認めない。",
                 "born_pref": 46,
@@ -97,4 +97,4 @@ def test_get_comment(app):
                 "born_pref": 25,
                 "job": "engineer"
             }
-        }
+        ]
