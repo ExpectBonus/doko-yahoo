@@ -39,7 +39,7 @@ def post_user_handler():
         # PostUserResponse
         return jsonify({
             "id": user.id
-        })
+        }), 201
     else:
         # ユーザの更新
         user.username = request.json["username"]
@@ -50,6 +50,19 @@ def post_user_handler():
         user.third_pref = request.json["third_pref"]
         db.session.add(user)
         db.session.commit()
+
+        # 趣味ではなくなったものを削除
+        hobbies = UserHobby.query\
+            .join(Hobby, UserHobby.hobby_id==Hobby.id, isouter=False)\
+            .with_entities(Hobby.name)\
+            .filter(UserHobby.user_id==user.id)\
+            .all()        
+        for h in list(map(lambda x: x[0],hobbies)):
+            hobby = Hobby.query.filter(Hobby.name==h).first()
+            now_user_hobby = UserHobby.query.filter(UserHobby.hobby_id==hobby.id,UserHobby.user_id==user.id).first()
+            if now_user_hobby not in request.json["hobbies"]:
+                db.session.delete(now_user_hobby)
+                db.session.commit()
 
         for h in request.json["hobbies"]:
             # 新しい趣味があればhobbiesに追加
@@ -71,7 +84,7 @@ def post_user_handler():
         # PostUserResponse
         return jsonify({
             "id": user.id
-        })
+        }), 201
 
 # GET /user/{provider_id} と DELETE /user/{user_id}
 @user_blueprint.route('/<string:id>', methods=['GET','DELETE'])
