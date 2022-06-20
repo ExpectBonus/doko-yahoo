@@ -1,15 +1,19 @@
 <template>
-	<v-app>
-		<router-view />
-	</v-app>
+  <ProfileView> </ProfileView>
 </template>
 
 <script>
-	export default {
-		name: "App",
+import ProfileView from "./views/ProfileView.vue";
 
-		data: () => ({
-			//
-		}),
-	};
+export default {
+  name: "App",
+  components: {
+    ProfileView,
+  },
+  data: function () {
+    return {
+      name: "guest",
+    };
+  },
+};
 </script>

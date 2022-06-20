@@ -1,0 +1,53 @@
+<div class="hello">
+	<div>名前だよ</div>
+	<input type="text" class="input-username-field" v-model="name">
+	<div>===================================</div>
+	<div>職種だよ</div>
+
+	<div>
+		<input type="radio" id="engineer" name="work" value="エンジニア" v-model="work">
+		<label for="engineer">エンジニア</label>
+		<input type="radio" id="designer" name="work" value="デザイナー" v-model="work">
+		<label for="designer">デザイン</label>
+		<input type="radio" id="business" name="work" value="ビジネス" v-model="work">
+		<label for="business">ビジネス</label>
+	</div>
+	<div>===================================</div>
+	<div>趣味だよ</div>
+	<div>
+		<input type="checkbox" id="exercise" name="exercise" value="運動" v-model="hobbies">
+		<label for="exercise">運動</label>
+		<input type="checkbox" id="read" name="read" value="読書" v-model="hobbies">
+		<label for="read">読書</label>
+		<input type="checkbox" id="drink" name="drink" value="お酒" v-model="hobbies">
+		<label for="drink">お酒</label>
+	</div>
+	<div>===================================</div>
+	<div>希望地域</div>
+	<select v-model="desiredPrefNum">
+		<option v-for="(pref, index) in prefs" :key="pref" :value="index">{{ pref }}</option>
+	</select>
+	<div>===================================</div>
+	<div>出身地</div>
+	<select v-model="fromPrefNum">
+		<option v-for="(pref, index) in prefs" :key="pref" :value="index">{{ pref }}</option>
+	</select>
+
+
+	<div>===================================</div>
+
+	<button @click="sendUserInfo">送信！</button>
+
+	<!-- getのテスト -->
+	<!-- <button @click="test">adviceをもらう</button> -->
+
+	<div>=============== for debug =================</div>
+	<div>名前：{{name}}</div>
+	<div>職種：{{work}}</div>
+	趣味：<span v-for="(hobby, index) in hobbies" :key="index" :value="hobby">{{hobby}},
+	</span>
+	<div>希望地域：{{ desiredPref }}</div>
+	<div>出身地：{{ fromPref }}</div>
+	<div>{{resData}}</div>
+	<div>===================================</div>
+</div>
