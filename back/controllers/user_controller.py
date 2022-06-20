@@ -39,7 +39,7 @@ def post_user_handler():
         # PostUserResponse
         return jsonify({
             "id": user.id
-        })
+        }), 201
     else:
         # ユーザの更新
         user.username = request.json["username"]
