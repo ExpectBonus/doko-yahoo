@@ -1,8 +1,13 @@
 <template>
-	<div>
+	<div id="map">
+		<header>
+			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
+			<HobbiesSelector @selectedHobbies="selectedHobbies = $event" />
+		</header>
 		<div>
 			<div id="map-container"></div>
 		</div>
+		<p>選択した趣味: {{ selectedHobbies }}</p>
 		<button @click="repaintMap">repaint!!</button>
 	</div>
 </template>
@@ -10,10 +15,15 @@
 <script>
 	import * as d3 from "d3";
 	import geoJson from "@/assets/japan_geo.json";
+	import hobbiesSelector from "@/components/HobbiesSelector";
 	export default {
 		name: "MapView",
+		components: {
+			HobbiesSelector: hobbiesSelector,
+		},
 		data() {
 			return {
+				selectedHobbies: [],
 				mapImage: null,
 				mapBoxParameters: {
 					width: 400,
@@ -76,6 +86,28 @@
 </script>
 
 <style scoped>
+	#map {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	header {
+		width: 100%;
+		height: 100px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	h1 {
+		font-weight: bold;
+	}
+	span.doko {
+		color: #008277;
+	}
+	span.yahoo {
+		color: #ff0033;
+	}
 	#map-container {
 		width: 100%;
 	}
