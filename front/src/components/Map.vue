@@ -35,23 +35,20 @@
 				},
 			};
 		},
-		computed: {
-			path() {
-				// 地図の投影設定
-				const projection = d3
-					.geoMercator()
-					.center(this.mapBoxParameters.centerPos)
-					.translate([
-						this.mapBoxParameters.width / 2,
-						this.mapBoxParameters.height / 2,
-					])
-					.scale(this.mapBoxParameters.scale);
-				// 地図をpathに投影(変換)
-				const path = d3.geoPath().projection(projection);
-				return path;
-			},
-		},
+		computed: {},
 		mounted() {
+			// 地図の投影設定
+			const projection = d3
+				.geoMercator()
+				.center(this.mapBoxParameters.centerPos)
+				.translate([
+					this.mapBoxParameters.width / 2,
+					this.mapBoxParameters.height / 2,
+				])
+				.scale(this.mapBoxParameters.scale);
+			// 地図をpathに投影(変換)
+			const path = d3.geoPath().projection(projection);
+
 			// SVG要素を追加
 			this.mapImage = d3
 				.select("#map-container svg")
@@ -59,7 +56,7 @@
 				.data(geoJson.features)
 				.enter()
 				.append("path")
-				.attr("d", this.path)
+				.attr("d", path)
 				.attr("stroke", "#666")
 				.attr("stroke-width", 0.25);
 		},
@@ -69,10 +66,17 @@
 			},
 		},
 		methods: {
+			/**
+			 * ホイール操作による地図画像の変化
+			 * @param {element} event wheelイベント
+			 */
 			zoomPan(event) {
+				//viewportの値をそれぞれ格納
 				let [x, y, w, h] = this.mapBoxParameters.viewport
 					.split(" ")
 					.map((v) => parseFloat(v));
+
+				// コントロールキー押下中のドラッグ(orトラックパッドのピンチイン/アウト)
 				if (event.ctrlKey) {
 					// 拡大（Y軸が上がる場合） 縮小（Y軸が下がる場合）
 					if (event.deltaY > 0) {
