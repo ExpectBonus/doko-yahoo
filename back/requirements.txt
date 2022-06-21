@@ -1,8 +1,9 @@
-uwsgi
-flask
-sqlalchemy
-psycopg2
-Flask-Migrate
+uwsgi == 2.0.20
+flask == 2.1.2
+sqlalchemy == 1.4.37
+psycopg2 == 2.9.3
+Flask-Migrate == 3.1.0
+pytest == 7.1.2
 flask_login
 flask_wtf
 wtforms

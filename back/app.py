@@ -12,7 +12,7 @@ import models
 app = Flask(__name__)
 
 # アプリ設定の読み込み
-app.config.from_object('config.Config')
+app.config.from_object('config.DevelopmentConfig')
 
 # DBの初期化
 init_db(app)

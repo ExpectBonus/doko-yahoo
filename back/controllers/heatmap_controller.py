@@ -39,21 +39,22 @@ def heatmap_handler(job):
 
 
     # 集計したユーザの希望都道府県の値を増やしていく
-    data = [0 for _ in range(47)]
+    data = dict([(k, 0.0) for k in PREFECTURES])
     for user in users:
         if user.second_pref==None:
-            data[user.first_pref-1] += 6
+            data[PREFECTURES[user.first_pref-1]] += 6
         elif user.third_pref==None:
-            data[user.first_pref-1] += 4
-            data[user.second_pref-1] += 2
+            data[PREFECTURES[user.first_pref-1]] += 4
+            data[PREFECTURES[user.second_pref-1]] += 2
         else:
-            data[user.first_pref-1] += 3
-            data[user.second_pref-1] += 2
-            data[user.third_pref-1] += 1
-    
+            data[PREFECTURES[user.first_pref-1]] += 3
+            data[PREFECTURES[user.second_pref-1]] += 2
+            data[PREFECTURES[user.third_pref-1]] += 1
+
     # 最大値を1に
-    data_max = max(data)
-    data = list(map(lambda x: float(x)/data_max,data))
+    data_max = max(data.values())
+    if data_max != 0:
+        data = dict([(k, v/data_max) for k,v in data.items()])    
 
     # GetHeatmapResponse
     return jsonify({
