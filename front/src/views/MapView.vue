@@ -2,10 +2,10 @@
 	<div id="map-view">
 		<header>
 			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
-			<HobbiesSelector @selectedHobbies="selectedHobbies = $event" />
+			<HobbiesSelector @selectedHobbies="getHeatMapData" />
 		</header>
 		<div class="contents">
-			<Map :populationParameters="selectedHobbies" />
+			<Map :populationParameters="heatMapData" />
 		</div>
 		<div class="drawer-header">
 			<p>みんなはどこで働くつもりだろう？</p>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+	import axios from "axios";
 	import hobbiesSelector from "@/components/HobbiesSelector";
 	import map from "@/components/Map.vue";
 	export default {
@@ -25,7 +26,36 @@
 		data() {
 			return {
 				selectedHobbies: [],
+				heatMapData: {},
 			};
+		},
+		methods: {
+			async getHeatMapData(payload) {
+				//set dummyData
+				this.heatMapData = {
+					東京都: 1,
+					大阪府: 0.8,
+					愛知県: 0.7,
+					福岡県: 0.2,
+				};
+				/* await axios
+					.get("/api/heatmap/", {
+						params: {
+							hobbies: payload,
+						},
+					})
+					.then((res) => {
+						if (res.status == "200") {
+							this.heatMapData = { ...res.data };
+						} else {
+							throw new Error(`status: ${res.status}`);
+						}
+					})
+					.catch((error) => {
+						alert("データの取得に失敗しました");
+						console.log(error);
+					}); */
+			},
 		},
 	};
 </script>

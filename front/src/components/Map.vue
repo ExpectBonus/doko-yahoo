@@ -17,8 +17,8 @@
 		name: "Map",
 		props: {
 			populationParameters: {
-				type: Array,
-				defalut: () => {},
+				type: Object,
+				default: () => {},
 			},
 		},
 		data() {
@@ -74,7 +74,7 @@
 					// 透明度をランダムに指定する (0.0 - 1.0)
 					//console.log(data);
 					console.log(item.properties.name_ja);
-					return Math.random();
+					return data[item.properties.name_ja] || 0.1;
 				});
 			},
 			/**
@@ -82,7 +82,6 @@
 			 * @param {event}
 			 */
 			zoomActions(event) {
-				console.log(event);
 				d3.select("#map-container svg g").attr("transform", event.transform);
 			},
 		},
