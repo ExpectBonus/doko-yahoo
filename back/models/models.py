@@ -1,8 +1,11 @@
 from db import db
 from datetime import datetime
+from flask_login import UserMixin
+import flask_wtf
+import wtforms
 
-# ユーザ情報
-class User(db.Model):
+# ユーザ情報(ログイン用にUserMixin追加)
+class User(UserMixin,db.Model):
 
     __tablename__ = 'users'
 
@@ -41,3 +44,13 @@ class Comment(db.Model):
     pref = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String(255), nullable=False)
+
+#ログインフォーム
+class LoginForm(flask_wtf.FlaskForm):
+    ''' ログインフォーム '''
+    user_id = wtforms.StringField(
+            'user_id',
+            [wtforms.validators.DataRequired(), wtforms.validators.Length(min=3, max=20)])
+    password = wtforms.PasswordField(
+            'password',
+            [wtforms.validators.DataRequired(), wtforms.validators.Length(min=4, max=20)])
