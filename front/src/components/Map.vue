@@ -54,7 +54,8 @@
 				.append("path")
 				.attr("d", path)
 				.attr("stroke", "#666")
-				.attr("stroke-width", 0.25);
+				.attr("stroke-width", 0.25)
+				.on("click", this.clickActions);
 
 			// ズーム操作系のイベントハンドラを登録
 			let zoomHandler = d3.zoom().on("zoom", this.zoomActions);
@@ -84,6 +85,12 @@
 			 */
 			zoomActions(event) {
 				d3.select("#map-container svg g").attr("transform", event.transform);
+			},
+			clickActions(event) {
+				this.$emit(
+					"clickedPrefecture",
+					event.path[0].__data__.properties.name_ja
+				);
 			},
 		},
 	};

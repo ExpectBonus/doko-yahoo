@@ -5,10 +5,13 @@
 			<HobbiesSelector @selectedHobbies="getHeatMapData" />
 		</header>
 		<div class="contents">
-			<Map :populationParameters="heatMapData" />
+			<Map
+				:populationParameters="heatMapData"
+				@clickedPrefecture="selectedPrefecture = $event"
+			/>
 		</div>
 		<div class="drawer-header">
-			<p>みんなはどこで働くつもりだろう？</p>
+			<p>{{ selectedPrefecture || "みんなはどこで働くつもりだろう？" }}</p>
 		</div>
 	</div>
 </template>
@@ -26,6 +29,7 @@
 		data() {
 			return {
 				selectedHobbies: [],
+				selectedPrefecture: null,
 				heatMapData: {},
 			};
 		},
