@@ -3,6 +3,7 @@ from flask.blueprints import Blueprint
 from models.models import *
 from db import db
 import flask_login
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(
         __name__,
@@ -27,7 +28,7 @@ def load_user(user_id):
 
 @app.route('/', methods=['GET'])
 def index():
-    ''' トップページ（ログイン不要） '''#html直打ちなんとかしたい
+    ''' トップページ（ログイン不要） '''
     return '''<h1>top page</h1><p><a href="/login">ログイン</a><p><a href="/member">メンバー</a><p><a href="/logout">ログアウト</a>'''
 
 @app.route('/member', methods=['GET'])
@@ -46,8 +47,10 @@ def login():
     form = LoginForm(flask.request.form)
     # validationチェック
     if form.validate_on_submit():
-        # DBからうまいことform.user_idとform.passwordを引っこ抜いてif form.user_id.data=="正しいid" and form.password.data=="正しいpassword"にしたい
-        if form.user_id.data == '' and form.password.data == '':
+        #usernameに登録された名前が入力された場合
+        if User.query.filter_by(username=form.user_id.data).one_or_none():
+        #Userからusernameとpasswordを引っこ抜いてif form.user_id.data=="username" and form.password.data=="password"にしたい
+        #Userにpasswordを登録して直でpassword=passwordとするのかハッシュ化するのか、みてくれだけならusernameあったら通しちゃっても…
             # ログインの実行
             user = User(form.user_id.data)
             flask_login.login_user(user)
