@@ -1,11 +1,12 @@
 <template>
 	<div id="map-container">
 		<svg
-			:width="mapBoxParameters.width"
-			:height="mapBoxParameters.height"
-			:viewBox="mapBoxParameters.viewport"
-			@wheel="zoomPan"
-		></svg>
+			ref="map-svg"
+			:width="mapPathsParameters.width"
+			:height="mapPathsParameters.height"
+		>
+			<g class="prefectures"></g>
+		</svg>
 	</div>
 </template>
 
@@ -23,15 +24,9 @@
 		data() {
 			return {
 				mapImage: null,
-				mapBoxParameters: {
+				mapPathsParameters: {
 					width: 400,
 					height: 400,
-					viewport: "0 0 400 400",
-					ratio: 1,
-					dx: 0,
-					dy: 0,
-					centerPos: [137.0, 38.2],
-					scale: 1000,
 				},
 			};
 		},
@@ -40,18 +35,18 @@
 			// 地図の投影設定
 			const projection = d3
 				.geoMercator()
-				.center(this.mapBoxParameters.centerPos)
+				.center([137.0, 38.2])
 				.translate([
-					this.mapBoxParameters.width / 2,
-					this.mapBoxParameters.height / 2,
+					this.mapPathsParameters.width / 2,
+					this.mapPathsParameters.height / 2,
 				])
-				.scale(this.mapBoxParameters.scale);
+				.scale(2000);
 			// 地図をpathに投影(変換)
 			const path = d3.geoPath().projection(projection);
 
 			// SVG要素を追加
 			this.mapImage = d3
-				.select("#map-container svg")
+				.select("#map-container svg g")
 				.selectAll("path")
 				.data(geoJson.features)
 				.enter()
@@ -59,6 +54,10 @@
 				.attr("d", path)
 				.attr("stroke", "#666")
 				.attr("stroke-width", 0.25);
+
+			// ズーム操作系のイベントハンドラを登録
+			let zoomHandler = d3.zoom().on("zoom", this.zoomActions);
+			zoomHandler(d3.select("#map-container svg"));
 		},
 		watch: {
 			populationParameters: function (newData, oldData) {
@@ -67,50 +66,9 @@
 		},
 		methods: {
 			/**
-			 * ホイール操作による地図画像の変化
-			 * @param {element} event wheelイベント
+			 * 地図の塗替え
+			 * @param {object} data 透明度の基準となるデータ
 			 */
-			zoomPan(event) {
-				//viewportの値をそれぞれ格納
-				let [x, y, w, h] = this.mapBoxParameters.viewport
-					.split(" ")
-					.map((v) => parseFloat(v));
-
-				// コントロールキー押下中のドラッグ(orトラックパッドのピンチイン/アウト)
-				if (event.ctrlKey) {
-					// 拡大（Y軸が上がる場合） 縮小（Y軸が下がる場合）
-					if (event.deltaY > 0) {
-						w = w * 1.01;
-						h = h * 1.01;
-					} else {
-						w = w * 0.99;
-						h = h * 0.99;
-					}
-					this.makeViewBox(x, y, w, h);
-					this.mapBoxParameters.ratio = w / this.mapBoxParameters.width;
-					event.preventDefault();
-				} else {
-					// 移動
-					if (
-						this.mapBoxParameters.dx + event.deltaX >
-							-this.mapBoxParameters.width &&
-						this.mapBoxParameters.dy + event.deltaY >
-							-this.mapBoxParameters.width &&
-						this.mapBoxParameters.dx + event.deltaX <
-							this.mapBoxParameters.width * 2 &&
-						this.mapBoxParameters.dy + event.deltaY <
-							this.mapBoxParameters.width * 2
-					) {
-						this.makeViewBox(x + event.deltaX, y + event.deltaY, w, h);
-						this.mapBoxParameters.dx += event.deltaX;
-						this.mapBoxParameters.dy += event.deltaY;
-					}
-				}
-			},
-			// viewboxを作成
-			makeViewBox(x, y, w, h) {
-				this.mapBoxParameters.viewport = [x, y, w, h].join(" ");
-			},
 			repaintMap(data) {
 				this.mapImage.attr("fill", "#FF0033").attr("fill-opacity", (item) => {
 					// 透明度をランダムに指定する (0.0 - 1.0)
@@ -119,15 +77,20 @@
 					return Math.random();
 				});
 			},
+			/**
+			 * 地図の移動・拡大縮小
+			 * @param {event}
+			 */
+			zoomActions(event) {
+				console.log(event);
+				d3.select("#map-container svg g").attr("transform", event.transform);
+			},
 		},
 	};
 </script>
 
 <style scoped>
-	#map-container {
-		width: 100%;
-		height: 100%;
-	}
+	#map-container,
 	svg {
 		width: 100%;
 		height: 100%;
