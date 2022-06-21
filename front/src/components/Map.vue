@@ -4,6 +4,7 @@
 			ref="map-svg"
 			:width="mapPathsParameters.width"
 			:height="mapPathsParameters.height"
+			viewBox="0 0 400 400"
 		>
 			<g class="prefectures"></g>
 		</svg>
@@ -40,7 +41,7 @@
 					this.mapPathsParameters.width / 2,
 					this.mapPathsParameters.height / 2,
 				])
-				.scale(2000);
+				.scale(1000);
 			// 地図をpathに投影(変換)
 			const path = d3.geoPath().projection(projection);
 
