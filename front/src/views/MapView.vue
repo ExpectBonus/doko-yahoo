@@ -4,7 +4,7 @@
 			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
 			<HobbiesSelector @selectedHobbies="selectedHobbies = $event" />
 		</header>
-		<div>
+		<div class="contents">
 			<Map :populationParameters="selectedHobbies" />
 		</div>
 	</div>
@@ -36,10 +36,12 @@
 	}
 	header {
 		width: 100%;
-		height: 100px;
+		height: 170px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		padding: 10px;
+		box-shadow: 0px 4px 4px #cdcdcd;
 	}
 	h1 {
 		font-weight: bold;
@@ -49,5 +51,9 @@
 	}
 	span.yahoo {
 		color: #ff0033;
+	}
+	.contents {
+		width: 100%;
+		height: calc(70vh - 170px);
 	}
 </style>
