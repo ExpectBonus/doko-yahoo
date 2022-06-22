@@ -50,18 +50,32 @@ export const prefectures = [
   "沖縄県",
   "海外",
 ];
-export const regionPrefs = {
-  Hokkaido: prefectures.slice(1, 2),
-  Tohoku: prefectures.slice(2, 8),
-  Kanto: prefectures.slice(8, 15),
-  Cyubu: prefectures.slice(15, 24),
-  Kinki: prefectures.slice(24, 31),
-  Chugoku: prefectures.slice(31, 36),
-  Shikoku: prefectures.slice(36, 40),
-  kyushu: prefectures.slice(40, 46),
-  Okinawa: prefectures.slice(46, 47),
-  Overseas: prefectures.slice(47, 48),
-};
+
+export const regionPrefs = [
+  { section: "北海道", prefs: prefectures.slice(1, 2) },
+  { section: "東北地方", prefs: prefectures.slice(2, 8) },
+  { section: "関東地方", prefs: prefectures.slice(8, 15) },
+  { section: "中部地方", prefs: prefectures.slice(15, 24) },
+  { section: "近畿地方", prefs: prefectures.slice(24, 31) },
+  { section: "中国地方", prefs: prefectures.slice(31, 36) },
+  { section: "四国地方", prefs: prefectures.slice(36, 40) },
+  { section: "九州地方", prefs: prefectures.slice(40, 46) },
+  { section: "沖縄", prefs: prefectures.slice(46, 47) },
+  { section: "海外", prefs: prefectures.slice(47, 48) },
+];
+
+// export const RegionPrefs = {
+//   Hokkaido: prefectures.slice(1, 2),
+//   Tohoku: prefectures.slice(2, 8),
+//   Kanto: prefectures.slice(8, 15),
+//   Cyubu: prefectures.slice(15, 24),
+//   Kinki: prefectures.slice(24, 31),
+//   Chugoku: prefectures.slice(31, 36),
+//   Shikoku: prefectures.slice(36, 40),
+//   kyushu: prefectures.slice(40, 46),
+//   Okinawa: prefectures.slice(46, 47),
+//   Overseas: prefectures.slice(47, 48),
+// };
 
 // "prefectures": [
 // 	{ "code": 1, "name": "北海道"},
