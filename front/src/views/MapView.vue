@@ -10,8 +10,8 @@
 				@clickedPrefecture="selectedPrefecture = $event"
 			/>
 		</div>
-		<div class="drawer-header">
-			<p>{{ selectedPrefecture || "みんなはどこで働くつもりだろう？" }}</p>
+		<div class="drawer">
+			<Board :prefectureName="selectedPrefecture" />
 		</div>
 	</div>
 </template>
@@ -20,11 +20,13 @@
 	import axios from "axios";
 	import hobbiesSelector from "@/components/HobbiesSelector";
 	import map from "@/components/Map.vue";
+	import board from "@/components/Board.vue";
 	export default {
 		name: "MapView",
 		components: {
 			HobbiesSelector: hobbiesSelector,
 			Map: map,
+			Board: board,
 		},
 		data() {
 			return {
@@ -96,29 +98,7 @@
 		width: 100%;
 		height: 100%;
 	}
-
-	.drawer-header {
+	.drawer {
 		width: 100%;
-		position: fixed;
-		bottom: 0;
-		height: 80px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		font-weight: bold;
-		background-color: #d9d9d9;
-		border: 1px solid #d9d9d9;
-		border-radius: 20px 20px 0px 0px;
-	}
-	.drawer-header::before {
-		content: "";
-		display: block;
-		width: 20%;
-		border: 2px solid #878787;
-		border-radius: 2px;
-		position: absolute;
-		top: 5px;
-		left: 40%;
 	}
 </style>
