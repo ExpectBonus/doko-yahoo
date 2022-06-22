@@ -3,7 +3,18 @@
 		<header>
 			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
 			<JobSelector @selectedJob="selectedJob = $event" />
-			<HobbiesSelector @selectedHobbies="getHeatMapData" />
+			<div class="hobbies-selector-drawer">
+				<HobbiesSelector
+					v-show="canViewHobbiesSelector"
+					@selectedHobbies="selectedHobbies = $event"
+				/>
+				<div class="draw-opener" @click="drawHobbiesSelector">
+					<button
+						class="arrow"
+						:class="{ active: canViewHobbiesSelector }"
+					></button>
+				</div>
+			</div>
 		</header>
 		<div class="contents">
 			<Map
@@ -33,6 +44,7 @@
 		},
 		data() {
 			return {
+				canViewHobbiesSelector: false,
 				selectedJob: null,
 				selectedHobbies: [],
 				selectedPrefecture: null,
@@ -40,6 +52,11 @@
 			};
 		},
 		methods: {
+			drawHobbiesSelector() {
+				this.canViewHobbiesSelector &&
+					this.getHeatMapData(this.selectedHobbies);
+				this.canViewHobbiesSelector = !this.canViewHobbiesSelector;
+			},
 			async getHeatMapData(payload) {
 				//set dummyData
 				this.heatMapData = {
@@ -85,7 +102,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 10px;
+		padding: 10px 10px 0 10px;
 		background-color: #ffffff;
 		box-shadow: 0px 4px 4px #cdcdcd;
 	}
@@ -98,6 +115,56 @@
 	span.yahoo {
 		color: #ff0033;
 	}
+	.hobbies-selector-drawer {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.draw-opener {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.arrow {
+		position: relative;
+		width: 30px;
+		height: 30px;
+		border: none;
+		background-color: transparent;
+	}
+	.arrow:before,
+	.arrow:after {
+		content: "";
+		background-color: #008277;
+		position: absolute;
+		top: 50%;
+		width: 3px;
+		height: calc(70% - 1px);
+		margin-top: -35%;
+	}
+	.arrow:before {
+		left: 50%;
+		margin-left: -25%;
+		transform: rotate(-45deg);
+	}
+	.arrow:after {
+		right: 50%;
+		margin-right: -25%;
+		transform: rotate(45deg);
+	}
+	.arrow:before,
+	.arrow:after {
+		transition: transform 0.34s ease;
+	}
+	.arrow.active:before {
+		transform: rotate(45deg);
+	}
+	.arrow.active:after {
+		transform: rotate(-45deg);
+	}
+
 	.contents {
 		width: 100%;
 		height: 100%;
