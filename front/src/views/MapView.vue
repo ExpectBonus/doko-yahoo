@@ -2,6 +2,7 @@
 	<div id="map-view">
 		<header>
 			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
+			<JobSelector @selectedJob="selectedJob = $event" />
 			<HobbiesSelector @selectedHobbies="getHeatMapData" />
 		</header>
 		<div class="contents">
@@ -18,18 +19,21 @@
 
 <script>
 	import axios from "axios";
+	import jobSelector from "@/components/JobSelector";
 	import hobbiesSelector from "@/components/HobbiesSelector";
 	import map from "@/components/Map.vue";
 	import board from "@/components/Board.vue";
 	export default {
 		name: "MapView",
 		components: {
+			JobSelector: jobSelector,
 			HobbiesSelector: hobbiesSelector,
 			Map: map,
 			Board: board,
 		},
 		data() {
 			return {
+				selectedJob: null,
 				selectedHobbies: [],
 				selectedPrefecture: null,
 				heatMapData: {},
@@ -45,7 +49,7 @@
 					福岡県: 0.2,
 				};
 				/* await axios
-					.get("/api/heatmap/", {
+					.get(`/api/heatmap/${selectedJob}`, {
 						params: {
 							hobbies: payload,
 						},
