@@ -23,6 +23,10 @@ export default {
       third_pref: "",
       selectedPrefs: [],
       isClicked: false,
+      isError: false,
+      errorMsg: [],
+      shortName_f: false,
+      selectName_f: false,
       hobbies_list: [
         {
           emoji: "🍻",
@@ -70,6 +74,7 @@ export default {
         },
       ],
       checkedHobbies: [],
+      params: {},
     };
   },
   computed: {
@@ -86,14 +91,22 @@ export default {
   },
   methods: {
     sendUserInfo: function () {
-      var params;
+      var err_f;
 
       // for deactivate submit button
-      this.isClicked = true;
+      this.initFlag();
 
-      params = this.makeParams();
+      this.makeParams();
+      err_f = this.checkParams();
+      if (err_f) {
+        // for resubmit
+        this.isClicked = false;
+        this.isError = true;
+        this.setErrorMsg();
+        return;
+      }
       axios
-        .post("/user", this.params)
+        .post("http://localhost:5001/user/", this.params)
         .then(function (res) {
           this.resData = res;
           console.log(res);
@@ -103,17 +116,75 @@ export default {
         });
     },
     makeParams: function () {
+      var uid;
+
+      uid = 1234;
       var params = {
-        id: 1234,
+        id: uid,
         username: this.username,
         job: this.job,
         born_pref: this.getPrefIndex(this.born_pref),
-        first_pref: 1,
-        second_pref: 1,
-        third_pref: 1,
-        hobbies: this.hobbies,
+        first_pref: this.getPrefIndex(this.selectedPrefs[0]),
+        second_pref: this.getPrefIndex(this.selectedPrefs[1]),
+        third_pref: this.getPrefIndex(this.selectedPrefs[2]),
+        hobbies: this.checkedHobbies,
       };
-      console.log(params["born_pref"]);
+      this.params = params;
+      console.log(params);
+    },
+    checkParams: function () {
+      // if (!isUniqueId(params["id"])) {
+      //   return true;
+      // }
+      var name;
+      var job;
+      var err_f = false;
+
+      name = this.params["username"].length;
+      job = this.params["job"].length;
+      if (name == 0) {
+        this.shortName_f = true;
+        err_f = true;
+      }
+      if (job == 0) {
+        this.selectJob_f = true;
+        err_f = true;
+      }
+      // if (name <= 0 && 30 <= name && isUniqueName(name)) {
+      //   return true;
+      // }
+      if (err_f) {
+        return true;
+      }
+      return false;
+    },
+    isSelectedPrefs: function () {
+      if (this.selectedPrefs.length == 0) {
+        return false;
+      }
+      return true;
+    },
+    isAllPrefs: function () {
+      if (this.selectedPrefs.length >= 3) {
+        return true;
+      }
+      return false;
+    },
+    setErrorMsg: function () {
+      if (this.shortName_f) {
+        this.errorMsg[this.errorMsg.length] =
+          "名前を入力してください。（必須）";
+      }
+      if (this.selectJob_f) {
+        this.errorMsg[this.errorMsg.length] = "職業を選んでください。（必須）";
+      }
+    },
+    initFlag: function () {
+      this.isClicked = true;
+      this.errorMsg = [];
+      this.isError = false;
+      this.shortName_f = false;
+      this.selectJob_f = false;
     },
     printPrefs: function (prefs) {
       if (prefs.length == 1) {

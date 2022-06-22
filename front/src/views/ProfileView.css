@@ -4,6 +4,45 @@
 	text-align: center;
 }
 
+.content {
+	border-radius: 20px;
+	min-height: 1000px;
+}
+
+.profile {
+	position: relative;
+	z-index: 1;
+	background: #FFFFFF;
+	min-height: 850px;
+	max-width: 60%;
+	margin: 0 auto 100px;
+	text-align: center;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.6), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+
+@media screen and (max-width: 959px) {
+	.profile {
+		position: relative;
+		z-index: 1;
+		background: #FFFFFF;
+		min-height: 1000px;
+		margin: 0 auto 100px;
+		max-width: 100%;
+		text-align: center;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	}
+
+	.send-button-field {
+		margin-top: 80px !important;
+	}
+
+	.content {
+		border-radius: 20px;
+		min-height: 1100px;
+	}
+}
+
 .input-form {
 	padding: 10px;
 	min-height: 94px;
@@ -187,8 +226,18 @@
 	font-size: 20px;
 	background-color: #008277;
 	color: white;
-	padding: 10px 50px 15px 50px;
+	/* padding: 10px 50px 15px 50px; */
+	padding: 10px 60px 15px 60px;
 	border-radius: 7px;
+}
+
+.show-prefs-container {
+	height: 110px;
+	padding: 10px;
+	width: 350px;
+	margin: 0% auto;
+	background-color: #008277;
+	border-radius: 20px;
 }
 
 
@@ -426,12 +475,12 @@
 	justify-content: space-between !important;
 	background-color: #008277;
 	color: white;
-	padding: 10px 50px 15px 50px;
+	padding: 10px 30px 15px 30px;
 	border-radius: 7px;
 }
 
 .three-pref {
-	margin-right: 20px;
+	margin-right: 5px;
 }
 
 /* hobiies */
@@ -527,7 +576,7 @@ input[type="checkbox"]:checked+label {
 }
 
 .send-button {
-	margin-top: 30px;
+	/* margin-top: 30px; */
 	position: relative;
 	z-index: 1;
 	font-size: 18px;
@@ -614,6 +663,11 @@ input[type="checkbox"]:checked+label {
 
 .send-button:focus {
 	color: #ffffff;
+}
+
+.send-button-field {
+	margin-top: 40px;
+	/* margin-bottom: 20px; */
 }
 
 /* loading */
@@ -713,4 +767,25 @@ input[type="checkbox"]:checked+label {
 		transform: scaleY(0);
 		opacity: 0;
 	}
+}
+
+/* error */
+
+.error-msg {
+	position: relative;
+	border: 3px double #da4033;
+	border-radius: 5px;
+	margin: 20px 0;
+	padding: 20px 20px 5px 20px;
+}
+
+.error-msg::before {
+	content: "入力が正しくありません";
+	position: absolute;
+	background-color: white;
+	color: #da4033;
+	font-weight: bold;
+	left: 20px;
+	top: -23px;
+	padding: 10px;
 }

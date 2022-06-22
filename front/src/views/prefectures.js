@@ -59,9 +59,9 @@ export const regionPrefs = [
   { section: "近畿地方", prefs: prefectures.slice(24, 31) },
   { section: "中国地方", prefs: prefectures.slice(31, 36) },
   { section: "四国地方", prefs: prefectures.slice(36, 40) },
-  { section: "九州地方", prefs: prefectures.slice(40, 46) },
-  { section: "沖縄", prefs: prefectures.slice(46, 47) },
-  { section: "海外", prefs: prefectures.slice(47, 48) },
+  { section: "九州地方", prefs: prefectures.slice(40, 47) },
+  { section: "沖縄", prefs: prefectures.slice(47, 48) },
+  { section: "海外", prefs: prefectures.slice(48, 49) },
 ];
 
 // export const RegionPrefs = {
