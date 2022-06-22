@@ -2,7 +2,7 @@
 	<div id="map-view">
 		<header>
 			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
-			<JobSelector @selectedJob="selectedJob = $event" />
+			<JobSelector @selectedJob="setJob" />
 			<div class="hobbies-selector-drawer">
 				<HobbiesSelector
 					v-show="canViewHobbiesSelector"
@@ -52,12 +52,15 @@
 			};
 		},
 		methods: {
+			setJob(job) {
+				this.selectedJob = job;
+				this.getHeatMapData();
+			},
 			drawHobbiesSelector() {
-				this.canViewHobbiesSelector &&
-					this.getHeatMapData(this.selectedHobbies);
+				this.canViewHobbiesSelector && this.getHeatMapData();
 				this.canViewHobbiesSelector = !this.canViewHobbiesSelector;
 			},
-			async getHeatMapData(payload) {
+			async getHeatMapData() {
 				//set dummyData
 				this.heatMapData = {
 					東京都: 1,
@@ -68,7 +71,7 @@
 				/* await axios
 					.get(`/api/heatmap/${selectedJob}`, {
 						params: {
-							hobbies: payload,
+							hobbies: this.selectedHobbies,
 						},
 					})
 					.then((res) => {
