@@ -22,7 +22,7 @@
 				@clickedPrefecture="selectedPrefecture = $event"
 			/>
 		</div>
-		<div class="drawer">
+		<div class="board-drawer">
 			<Board :prefectureName="selectedPrefecture" />
 		</div>
 	</div>
@@ -172,7 +172,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	.drawer {
+	.board-drawer {
 		width: 100%;
 	}
 </style>

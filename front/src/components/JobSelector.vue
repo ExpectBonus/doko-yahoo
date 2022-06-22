@@ -92,7 +92,6 @@
 		background-color: #d9d9d9;
 		border-radius: 10px;
 		border: 1px solid #d9d9d9;
-		box-sizing: border-box;
 		padding: 0.3rem;
 		transition: all 0.3s ease-out;
 	}
