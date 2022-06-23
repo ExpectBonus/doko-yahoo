@@ -1,6 +1,6 @@
 <template>
   <!-- <hello-world /> -->
-  <profile-view />
+  <ProfileView />
 </template>
 
 <script>

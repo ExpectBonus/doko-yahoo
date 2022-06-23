@@ -37,7 +37,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  //TODO: ログイン認証
+  // TODO: ログイン認証
   /* if(!isAuth){
 		// 認証前のユーザは問答無用でトップに飛ばす
 		next({ name: 'top'})
