@@ -109,6 +109,12 @@
 		background-color: #ffffff;
 		box-shadow: 0px 4px 4px #cdcdcd;
 	}
+	@media screen and (min-width: 1024px) {
+		header {
+			padding-left: calc((100% - 1024px) / 2);
+			padding-right: calc((100% - 1024px) / 2);
+		}
+	}
 	h1 {
 		font-weight: bold;
 	}
