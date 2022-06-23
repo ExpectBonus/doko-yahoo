@@ -17,7 +17,7 @@
       </div>
     </header>
     <div class="contents">
-      <Map
+      <HeatMap
         :population-parameters="heatMapData"
         @clickedPrefecture="selectedPrefecture = $event"
       />
@@ -32,14 +32,14 @@
 import axios from "axios";
 import jobSelector from "@/components/JobSelector";
 import hobbiesSelector from "@/components/HobbiesSelector";
-import map from "@/components/Map.vue";
+import heatMap from "@/components/HeatMap.vue";
 import board from "@/components/Board.vue";
 export default {
   name: "MapView",
   components: {
     JobSelector: jobSelector,
     HobbiesSelector: hobbiesSelector,
-    Map: map,
+    HeatMap: heatMap,
     Board: board,
   },
   data() {

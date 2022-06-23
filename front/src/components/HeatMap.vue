@@ -15,7 +15,7 @@
 import * as d3 from "d3";
 import geoJson from "@/assets/japan_geo.json";
 export default {
-  name: "Map",
+  name: "HeatMap",
   props: {
     populationParameters: {
       type: Object,

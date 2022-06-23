@@ -179,13 +179,14 @@
                 <div
                   class="section-container"
                   v-for="(regionPref, sectionIndex) in regionPrefs"
+                  :key="sectionIndex"
                 >
                   <div class="label-section">
                     <span class="label-born-field">{{
                       regionPref.section
                     }}</span>
                     <div class="prefs-container">
-                      <span v-for="(pref, prefIndex) in regionPref.prefs">
+                      <span v-for="(pref, prefIndex) in regionPref.prefs" :key="prefIndex">
                         <!-- <input type="checkbox" class="input-born-field" :id="getPrefIndex(pref)"
 										name="three" :value="pref" v-model="selectedPrefs" @click="clickPref"
 										v-bind:disabled="isSelected"> -->
@@ -251,10 +252,10 @@
   </div>
 </template>
 <script>
-import { prefectures as prefs } from "./prefectures.js"
-import { hobbies_list } from "./hobbies.js"
-import { regionPrefs } from "./prefectures.js"
-import axios from "axios"
+import { prefectures as prefs } from "./prefectures.js";
+import { hobbies_list } from "./hobbies.js";
+import { regionPrefs } from "./prefectures.js";
+import axios from "axios";
 
 export default {
   name: "ProfileView",
@@ -283,48 +284,48 @@ export default {
       selectJob_f: false,
       selectBorn_f: false,
       selectFirst_f: false,
-    }
+    };
   },
   computed: {
     getPrefIndex: function () {
       return function (pref) {
         if (pref == null) {
-          return null
+          return null;
         }
-        return this.prefs.indexOf(pref)
-      }
+        return this.prefs.indexOf(pref);
+      };
     },
   },
   methods: {
     sendUserInfo: function () {
-      let err_f
+      let err_f;
 
       // for deactivate submit button
-      this.initFlag()
+      this.initFlag();
 
-      err_f = this.checkParams()
+      err_f = this.checkParams();
       if (err_f) {
         // for resubmit
-        this.isClicked = false
-        this.isError = true
-        this.setErrorMsg()
-        return
+        this.isClicked = false;
+        this.isError = true;
+        this.setErrorMsg();
+        return;
       }
-      this.makeParams()
+      this.makeParams();
       axios
         .post("http://localhost:5001/api/user/", this.params)
         .then(function (res) {
-          this.resData = res
-          console.log(res)
+          this.resData = res;
+          console.log(res);
         })
         .catch(function (err) {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
     makeParams: function () {
-      let uid
+      let uid;
 
-      uid = 1234
+      uid = 1234;
       let params = {
         id: uid,
         username: this.username,
@@ -334,96 +335,96 @@ export default {
         second_pref: this.getPrefIndex(this.selectedPrefs[1]),
         third_pref: this.getPrefIndex(this.selectedPrefs[2]),
         hobbies: this.checkedHobbies,
-      }
-      this.params = params
-      console.log(params)
+      };
+      this.params = params;
+      console.log(params);
     },
     checkParams: function () {
       // if (!isUniqueId(params["id"])) {
       //   return true;
       // }
 
-      let name
-      let err_f = false
-      let errorColumns = []
+      let name;
+      let err_f = false;
+      let errorColumns = [];
 
-      name = this.name.length
-      born = this.born
+      name = this.name.length;
+      born = this.born;
       if (name == 0) {
-        this.shortName_f = true
-        err_f = true
+        this.shortName_f = true;
+        err_f = true;
       }
       if (!this.job) {
-        this.selectJob_f = true
-        err_f = true
+        this.selectJob_f = true;
+        err_f = true;
       }
       if (!this.born) {
-        this.selectBorn_f = true
-        err_f = true
+        this.selectBorn_f = true;
+        err_f = true;
       }
       if (!this.first) {
-        this.selectFirst_f = true
-        err_f = true
+        this.selectFirst_f = true;
+        err_f = true;
       }
 
       // if (name <= 0 && 30 <= name && isUniqueName(name)) {
       //   return true;
       // }
       if (err_f) {
-        return true
+        return true;
       }
-      return false
+      return false;
     },
     isSelectedPrefs: function () {
       if (this.selectedPrefs.length == 0) {
-        return false
+        return false;
       }
-      return true
+      return true;
     },
     isAllPrefs: function (pref) {
       if (this.selectedPrefs.length >= 3) {
         if (this.selectedPrefs.indexOf(pref) == -1) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     },
     setErrorMsg: function () {
       if (this.shortName_f) {
-        this.errorMsg[this.errorMsg.length] = "名前を入力してください。"
+        this.errorMsg[this.errorMsg.length] = "名前を入力してください。";
       }
       if (this.selectJob_f) {
-        this.errorMsg[this.errorMsg.length] = "職業を選んでください。"
+        this.errorMsg[this.errorMsg.length] = "職業を選んでください。";
       }
       if (this.selectBorn_f) {
-        this.errorMsg[this.errorMsg.length] = "出身地を選んでください。"
+        this.errorMsg[this.errorMsg.length] = "出身地を選んでください。";
       }
       if (this.selectFirst_f) {
         this.errorMsg[this.errorMsg.length] =
-          "住みたい都道府県の第1希望を選んでください。"
+          "住みたい都道府県の第1希望を選んでください。";
       }
     },
     initFlag: function () {
-      this.isClicked = true
-      this.errorMsg = []
-      this.isError = false
-      this.shortName_f = false
-      this.selectJob_f = false
-      this.shortBorn_f = false
-      this.selectFirst_f = false
+      this.isClicked = true;
+      this.errorMsg = [];
+      this.isError = false;
+      this.shortName_f = false;
+      this.selectJob_f = false;
+      this.shortBorn_f = false;
+      this.selectFirst_f = false;
     },
     printPrefs: function (prefs) {
       if (prefs.length == 1) {
-        return prefs[0]
+        return prefs[0];
       }
-      let ret = prefs[0]
+      let ret = prefs[0];
       for (let i = 1; i < prefs.length; i++) {
-        ret += ", " + prefs[i]
+        ret += ", " + prefs[i];
       }
-      return ret
+      return ret;
     },
   },
-}
+};
 </script>
 <style scoped>
 /* common css */
