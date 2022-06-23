@@ -10,10 +10,5 @@ export default {
   components: {
     ProfileView,
   },
-  data: function () {
-    return {
-      name: "guest",
-    };
-  },
 };
 </script>

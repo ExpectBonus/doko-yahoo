@@ -2,6 +2,7 @@
 <style src="./ProfileView.css"></style>
 <script>
 import { prefectures as prefs } from "./prefectures.js";
+import { hobbies_list } from "./hobbies.js";
 import { regionPrefs } from "./prefectures.js";
 import axios from "axios";
 
@@ -9,72 +10,29 @@ export default {
   name: "ProfileView",
   data: function () {
     return {
-      hobbies: [],
-      selectedHobbies: [],
+      // import prefs
+      regionPrefs,
+      hobbies_list,
+      // input
       username: "",
       job: "",
       prefs,
-      born: "",
-      regionPrefs,
-      desiredPrefNum: 0,
       born_pref: "",
       first_pref: "",
       second_pref: "",
       third_pref: "",
       selectedPrefs: [],
-      isClicked: false,
-      isError: false,
-      errorMsg: [],
-      shortName_f: false,
-      selectName_f: false,
-      hobbies_list: [
-        {
-          emoji: "🍻",
-          name: "飲み会",
-        },
-        {
-          emoji: "☕",
-          name: "カフェ",
-        },
-        {
-          emoji: "🎮",
-          name: "ゲーム",
-        },
-        {
-          emoji: "📷",
-          name: "カメラ",
-        },
-        {
-          emoji: "⚾",
-          name: "野球",
-        },
-        {
-          emoji: "⚽",
-          name: "サッカー",
-        },
-        {
-          emoji: "🏀",
-          name: "バスケットボール",
-        },
-        {
-          emoji: "🎹",
-          name: "ピアノ",
-        },
-        {
-          emoji: "💃",
-          name: "ダンス",
-        },
-        {
-          emoji: "🚗",
-          name: "ドライブ",
-        },
-        {
-          emoji: "✈️",
-          name: "旅行",
-        },
-      ],
       checkedHobbies: [],
       params: {},
+      // button
+      isClicked: false,
+      // error flag
+      errorMsg: [],
+      isError: false,
+      shortName_f: false,
+      selectJob_f: false,
+      selectBorn_f: false,
+      selectFirst_f: false,
     };
   },
   computed: {
@@ -85,6 +43,9 @@ export default {
     },
     getPrefIndex: function () {
       return function (pref) {
+        if (pref == null) {
+          return null;
+        }
         return this.prefs.indexOf(pref);
       };
     },
@@ -106,7 +67,7 @@ export default {
         return;
       }
       axios
-        .post("http://localhost:5001/user/", this.params)
+        .post("http://localhost:5001/api/user/", this.params)
         .then(function (res) {
           this.resData = res;
           console.log(res);
@@ -138,10 +99,14 @@ export default {
       // }
       var name;
       var job;
+      var born;
+      var first;
       var err_f = false;
 
       name = this.params["username"].length;
       job = this.params["job"].length;
+      born = this.params["born_pref"];
+      first = this.params["first_pref"];
       if (name == 0) {
         this.shortName_f = true;
         err_f = true;
@@ -150,6 +115,15 @@ export default {
         this.selectJob_f = true;
         err_f = true;
       }
+      if (born == -1) {
+        this.selectBorn_f = true;
+        err_f = true;
+      }
+      if (first == -1) {
+        this.selectFirst_f = true;
+        err_f = true;
+      }
+
       // if (name <= 0 && 30 <= name && isUniqueName(name)) {
       //   return true;
       // }
@@ -164,19 +138,27 @@ export default {
       }
       return true;
     },
-    isAllPrefs: function () {
+    isAllPrefs: function (pref) {
       if (this.selectedPrefs.length >= 3) {
-        return true;
+        if (this.selectedPrefs.indexOf(pref) == -1) {
+          return true;
+        }
       }
       return false;
     },
     setErrorMsg: function () {
       if (this.shortName_f) {
-        this.errorMsg[this.errorMsg.length] =
-          "名前を入力してください。（必須）";
+        this.errorMsg[this.errorMsg.length] = "名前を入力してください。";
       }
       if (this.selectJob_f) {
-        this.errorMsg[this.errorMsg.length] = "職業を選んでください。（必須）";
+        this.errorMsg[this.errorMsg.length] = "職業を選んでください。";
+      }
+      if (this.selectBorn_f) {
+        this.errorMsg[this.errorMsg.length] = "出身地を選んでください。";
+      }
+      if (this.selectFirst_f) {
+        this.errorMsg[this.errorMsg.length] =
+          "住みたい都道府県の第1希望を選んでください。";
       }
     },
     initFlag: function () {
@@ -185,6 +167,8 @@ export default {
       this.isError = false;
       this.shortName_f = false;
       this.selectJob_f = false;
+      this.shortBorn_f = false;
+      this.selectFirst_f = false;
     },
     printPrefs: function (prefs) {
       if (prefs.length == 1) {

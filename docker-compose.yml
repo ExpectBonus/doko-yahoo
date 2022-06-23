@@ -1,14 +1,14 @@
-version: '3'
+version: "3"
 
 services:
-
   # フロント(本番環境)
   web:
+    container_name: doko-yahoo_web_1
     build:
       context: ./
       dockerfile: ./web/Dockerfile
     environment:
-      TZ: 'Asia/Tokyo'
+      TZ: "Asia/Tokyo"
     ports:
       - 8000:8000
     volumes:
@@ -17,9 +17,10 @@ services:
       - ./back/static:/var/www/static/
     depends_on:
       - back
-  
+
   # フロント(開発環境)
   front:
+    container_name: doko-yahoo_front_1
     build:
       context: ./front
       dockerfile: Dockerfile
@@ -28,14 +29,15 @@ services:
       - ./front/node_modules:/app/node_modules
     ports:
       - "8080:8080"
-    command: 'npm run serve'
+    command: "npm run serve"
 
   # バックエンド
   back:
+    container_name: doko-yahoo_back_1
     build:
       context: ./back
       dockerfile: Dockerfile
-    command: 'sh /server/start.sh'
+    command: "sh /server/start.sh"
     ports:
       - 5001:5001
     volumes:
