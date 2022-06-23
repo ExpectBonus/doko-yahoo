@@ -17,7 +17,7 @@
 			<div class="input-form">
 				<div class="label-form">
 					<img class="label-icon" src="../assets/badge.png">
-					<span class="label-name">名前</span>
+					<span class="label-name">名前</span><span class="required-mark">＊</span>
 				</div>
 				<div class="input-username">
 					<label class="input-username-label">
@@ -31,7 +31,7 @@
 			<div class="input-form">
 				<div class="label-form">
 					<img class="label-icon" src="../assets/business_center.png">
-					<span class="label-name">職種</span>
+					<span class="label-name">職種</span><span class="required-mark">＊</span>
 				</div>
 				<div class="select-jobs">
 					<input type="radio" class="input-job-field" id="engineer" name="job" value="エンジニア" v-model="job">
@@ -46,7 +46,7 @@
 			<div class="input-form">
 				<div class="label-form">
 					<img class="label-icon" src="../assets/home.png">
-					<span class="label-name">今、どこに住んでいる？</span>
+					<span class="label-name">今、どこに住んでいる？</span><span class="required-mark">＊</span>
 				</div>
 				<div class="modal-button-field">
 					<a href="#select-born-pref" v-if="born_pref" class="modal-button-selected">
@@ -88,7 +88,7 @@
 			<div class="input-form">
 				<div class="label-form">
 					<img class="label-icon" src="../assets/home_work.png">
-					<span class="label-name">就職後はどこに住みたい？</span>
+					<span class="label-name">就職後はどこに住みたい？</span><span class="required-mark">＊</span>
 				</div>
 
 				<div class="modal-button-field">
@@ -106,7 +106,7 @@
 					<a href="#!" class="modal-overlay"></a>
 					<div class="modal-window">
 						<div class="modal-content">
-							<p class="modal-title">最大で3つまで選んでください</p>
+							<p class="modal-title">最大3つまで選んでください</p>
 							<div v-if="isSelectedPrefs()" class="show-prefs-container">
 								<div v-for="(pref, index) in selectedPrefs" :key="index">
 									<span class="selected-born">第{{index + 1}}希望：{{pref}}</span>

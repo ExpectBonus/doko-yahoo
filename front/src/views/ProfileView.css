@@ -55,6 +55,12 @@
 	/* width: 80%; */
 }
 
+.required-mark {
+	padding: 10px;
+	font-size: 15px;
+	color: red;
+}
+
 .label-name {
 	margin-left: 10px;
 	margin-bottom: 15px;
