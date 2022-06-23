@@ -1,11 +1,11 @@
 <template>
-	<v-main></v-main>
+  <v-main></v-main>
 </template>
 
 <script>
-	export default {
-		name: "TopView",
-	};
+export default {
+  name: "TopView",
+};
 </script>
 
 <style scoped></style>
