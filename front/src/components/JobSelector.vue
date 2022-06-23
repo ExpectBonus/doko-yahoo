@@ -1,15 +1,15 @@
 <template>
-	<div id="hobbies-selector">
-		<div class="hobby" v-for="(hobby, index) in hobbies_list" :key="index">
+	<div id="jobs-selector">
+		<div class="job" v-for="(job, index) in jobs_list" :key="index">
 			<input
-				type="checkbox"
-				:id="'hobby' + index"
-				:value="hobby.name"
-				v-model="checkedHobbies"
+				type="radio"
+				:id="'job' + index"
+				:value="job.name"
+				v-model="selectedJobName"
 			/>
-			<label :for="'hobby' + index">
-				<span class="emoji">{{ hobby.emoji }}</span>
-				{{ hobby.name }}
+			<label :for="'job' + index">
+				<span class="emoji">{{ job.emoji }}</span>
+				{{ job.displayName }}
 			</label>
 		</div>
 	</div>
@@ -17,84 +17,67 @@
 
 <script>
 	export default {
-		name: "HobbiesSelector",
+		name: "JobSelector",
 		data() {
 			return {
-				hobbies_list: [
+				jobs_list: [
 					{
-						emoji: "🍻",
-						name: "飲み会",
+						emoji: "🌐",
+						displayName: "ALL",
+						name: "",
 					},
 					{
-						emoji: "☕",
-						name: "カフェ",
+						emoji: "💻",
+						displayName: "エンジニア",
+						name: "engineer",
 					},
 					{
-						emoji: "🎮",
-						name: "ゲーム",
+						emoji: "🎨",
+						displayName: "デザイナー",
+						name: "designer",
 					},
 					{
-						emoji: "📷",
-						name: "カメラ",
-					},
-					{
-						emoji: "⚾",
-						name: "野球",
-					},
-					{
-						emoji: "⚽",
-						name: "サッカー",
-					},
-					{
-						emoji: "🏀",
-						name: "バスケットボール",
-					},
-					{
-						emoji: "🎹",
-						name: "ピアノ",
-					},
-					{
-						emoji: "💃",
-						name: "ダンス",
-					},
-					{
-						emoji: "🚗",
-						name: "ドライブ",
-					},
-					{
-						emoji: "✈️",
-						name: "旅行",
+						emoji: "💼",
+						displayName: "ビジネス",
+						name: "business",
 					},
 				],
-				checkedHobbies: [],
+				selectedJobName: "",
 			};
 		},
 		watch: {
-			checkedHobbies: function (newArray, oldArray) {
-				this.$emit("selectedHobbies", newArray);
+			selectedJobName: function (newValue, oldValue) {
+				this.$emit("selectedJob", newValue);
 			},
 		},
 	};
 </script>
 
 <style scoped>
-	#hobbies-selector {
+	#jobs-selector {
 		font-family: MyFontFamily, sans-serif;
 		position: relative;
 		width: 100%;
+		height: 3rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-around;
 		gap: 10px;
-		flex-wrap: wrap;
+		overflow: auto;
+		padding: 2px;
+	}
+	@media screen and (max-width: 450px) {
+		#jobs-selector {
+			justify-content: flex-start;
+		}
 	}
 
-	.hobby {
+	.job {
 		position: relative;
 	}
 
-	input[type="checkbox"] {
+	input[type="radio"] {
 		opacity: 0;
 		position: absolute;
 		top: 0;
@@ -110,6 +93,7 @@
 		height: 100%;
 		text-align: center;
 		font-weight: bold;
+		white-space: nowrap;
 		color: #292929;
 		background-color: #d9d9d9;
 		border-radius: 10px;
@@ -118,7 +102,7 @@
 		transition: all 0.3s ease-out;
 	}
 
-	input[type="checkbox"]:checked + label {
+	input[type="radio"]:checked + label {
 		color: #ffffff;
 		background-color: #008277;
 		border-color: #008277;

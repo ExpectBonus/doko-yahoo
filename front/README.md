@@ -18,3 +18,8 @@ docker-compose up -d front
 ```
 docker-compose run --rm front sh
 ```
+
+# Resources
+- 地図データ: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/)
+
+- 日本地図のアイコン https://icooon-mono.com/10163-%E6%97%A5%E6%9C%AC%E5%9C%B0%E5%9B%B3%E3%81%AE%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3/
