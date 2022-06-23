@@ -62,10 +62,15 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: space-around;
 		gap: 10px;
 		overflow: auto;
 		padding: 2px;
+	}
+	@media screen and (max-width: 450px) {
+		#jobs-selector {
+			justify-content: flex-start;
+		}
 	}
 
 	.job {

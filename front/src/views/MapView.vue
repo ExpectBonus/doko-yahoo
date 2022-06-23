@@ -179,6 +179,8 @@
 		height: 100%;
 	}
 	.board-drawer {
+		position: fixed;
+		bottom: 0;
 		width: 100%;
 	}
 </style>
