@@ -62,6 +62,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: space-evenly;
 		gap: 10px;
 		overflow: auto;
 		padding: 2px;
