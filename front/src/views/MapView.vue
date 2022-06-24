@@ -99,6 +99,7 @@
 		align-items: center;
 		overflow-y: auto;
 		scroll-snap-type: y mandatory;
+		-webkit-overflow-scrolling: touch; /* Important for iOS devices */
 	}
 	header {
 		width: 100%;
@@ -178,11 +179,12 @@
 
 	.contents {
 		width: 100%;
-		height: 85%;
+		min-height: 100%;
 		scroll-snap-align: start;
 	}
 	.board-drawer {
 		position: relative;
+		top: -15%;
 		width: 100%;
 		scroll-snap-align: start;
 	}

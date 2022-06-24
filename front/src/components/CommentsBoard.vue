@@ -53,4 +53,8 @@
 		justify-content: center;
 		font-weight: bold;
 	}
+	.comments {
+		width: 100%;
+		height: calc(85% - 80px);
+	}
 </style>
