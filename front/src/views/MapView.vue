@@ -61,15 +61,8 @@
 				this.canViewHobbiesSelector = !this.canViewHobbiesSelector;
 			},
 			async getHeatMapData() {
-				// set dummyData
-				this.heatMapData = {
-					東京都: 1,
-					大阪府: 0.8,
-					愛知県: 0.7,
-					福岡県: 0.2,
-				};
-				/* await axios
-					.get(`/api/heatmap/${selectedJob}`, {
+				await axios
+					.get(`/api/heatmap/${this.selectedJob}`, {
 						params: {
 							hobbies: this.selectedHobbies,
 						},
@@ -84,7 +77,7 @@
 					.catch((error) => {
 						alert("データの取得に失敗しました");
 						console.log(error);
-					}); */
+					});
 			},
 		},
 	};
