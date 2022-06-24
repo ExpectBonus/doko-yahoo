@@ -27,9 +27,12 @@
 		},
 		methods: {
 			emitInputComment() {
-				this.inputText.length > 0 && this.inputText.length < 150
-					? this.$emit("emit-input-comment", this.inputText)
-					: alert("150文字以下で入力してください");
+				if (this.inputText.length > 0 && this.inputText.length < 150) {
+					this.$emit("emit-input-comment", this.inputText);
+					this.inputText = "";
+				} else {
+					alert("150文字以下で入力してください");
+				}
 			},
 		},
 	};

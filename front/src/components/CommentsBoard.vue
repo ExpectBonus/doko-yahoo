@@ -28,21 +28,17 @@
 				default: () => {},
 			},
 		},
-		data() {
-			return {
-				inputText: "",
-			};
-		},
 		methods: {
 			async postComment(comment) {
 				const result = await axios
 					.post(`/api/comments/${this.prefecture.id}`, {
-						id: 999, //TODO: this.userId,
+						id: 1, //TODO: this.userId,
 						comment: comment,
 					})
 					.then((response) => {
 						if ((response.status = 201)) {
 							/** 成功処理 */
+							this.inputText = "";
 						}
 					})
 					.catch((error) => {
