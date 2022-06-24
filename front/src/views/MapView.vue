@@ -23,7 +23,7 @@
 			/>
 		</div>
 		<div class="board-drawer">
-			<CommentsBoard :prefecture-name="selectedPrefecture" />
+			<CommentsBoard :prefecture="selectedPrefecture" />
 		</div>
 	</div>
 </template>
@@ -47,7 +47,7 @@
 				canViewHobbiesSelector: false,
 				selectedJob: null,
 				selectedHobbies: [],
-				selectedPrefecture: null,
+				selectedPrefecture: {},
 				heatMapData: {},
 			};
 		},

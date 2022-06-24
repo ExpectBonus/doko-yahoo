@@ -49,6 +49,7 @@
 						console.error(error);
 						/**エラー処理 */
 					});
+				console.log(result);
 			},
 		},
 	};
