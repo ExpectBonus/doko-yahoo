@@ -117,7 +117,7 @@
 						:class="{ selected: selectedPrefs.length }"
 					>
 						<div class="show-selected-pref">
-							{{ printPrefs(selectedPrefs) || "都道府県を選ぶ" }}
+							{{ selectedPrefsToStr || "都道府県を選ぶ" }}
 						</div>
 					</a>
 				</div>
@@ -231,6 +231,13 @@
 			};
 		},
 		computed: {
+			selectedPrefsToStr() {
+				if (!this.selectedPrefs) return ""; //都道府県が選ばれていない場合は即空白リターン
+				let str = this.selectedPrefs.reduce((prefs, pref) => {
+					return prefs + `${pref}, `; //文字列として並べていく
+				}, "");
+				return str.slice(0, -2); //末尾のカンマとスペースを削除
+			},
 			getPrefIndex: function () {
 				return function (pref) {
 					if (pref == null) {
@@ -356,16 +363,6 @@
 				this.selectJob_f = false;
 				this.shortBorn_f = false;
 				this.selectFirst_f = false;
-			},
-			printPrefs: function (prefs) {
-				if (prefs.length == 1) {
-					return prefs[0];
-				}
-				let ret = prefs[0];
-				for (let i = 1; i < prefs.length; i++) {
-					ret += ", " + prefs[i];
-				}
-				return ret;
 			},
 		},
 	};
