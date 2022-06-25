@@ -294,7 +294,7 @@
 					this.selectBorn_f = true;
 					err_f = true;
 				}
-				if (!this.selectedPrefs) {
+				if (!this.selectedPrefs.length) {
 					this.selectFirst_f = true;
 					err_f = true;
 				}
