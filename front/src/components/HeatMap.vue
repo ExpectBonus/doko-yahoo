@@ -32,6 +32,11 @@ export default {
     };
   },
   computed: {},
+  watch: {
+    populationParameters: function (newData, oldData) {
+      this.repaintMap(newData);
+    },
+  },
   mounted() {
     // 地図の投影設定
     const projection = d3
@@ -67,6 +72,7 @@ export default {
       this.repaintMap(newData);
     },
   },
+
   methods: {
     /**
      * 地図の塗替え
@@ -75,7 +81,7 @@ export default {
     repaintMap(data) {
       this.mapImage.attr("fill", "#FF0033").attr("fill-opacity", (item) => {
         // 透明度をランダムに指定する (0.0 - 1.0)
-        //console.log(data);
+        // console.log(data);
         console.log(item.properties.name_ja);
         return data[item.properties.name_ja] || 0.1;
       });
