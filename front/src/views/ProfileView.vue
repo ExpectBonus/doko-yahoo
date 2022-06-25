@@ -156,8 +156,8 @@
 												:value="pref"
 												v-model="selectedPrefs"
 												:disabled="
-													this.selectedPrefs.length >= 3 &&
-													this.selectedPrefs.indexOf(pref) == -1
+													selectedPrefs.length >= 3 &&
+													selectedPrefs.indexOf(pref) == -1
 												"
 											/>
 											<label :for="getPrefIndex(pref)" class="label-born">
