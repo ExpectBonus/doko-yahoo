@@ -18,7 +18,8 @@ def post_user_handler():
                     born_pref=request.json["born_pref"],
                     first_pref=request.json["first_pref"],
                     second_pref=request.json["second_pref"],
-                    third_pref=request.json["third_pref"])
+                    third_pref=request.json["third_pref"],
+                    password=request.json["password"])
         db.session.add(new_user)
         db.session.commit()
 

@@ -1,0 +1,15 @@
+{
+  "provider_id": "go",
+  "username": "ho",
+  "job": "engineer",
+  "born_pref": 46,
+  "first_pref": 1,
+  "second_pref": 2,
+  "third_pref": 5,
+  "password": "abc123",
+  "hobbies": [
+    "酒好き",
+    "ゲーマー",
+    "ピアノ"
+  ]
+}

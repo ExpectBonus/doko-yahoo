@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 
 class DevelopmentConfig:
@@ -14,6 +15,14 @@ class DevelopmentConfig:
     SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@db:5432/postgres"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
+
+    # JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=10)
+    JWT_TOKEN_LOCATION = ['cookies']
+
+    JWT_COOKIE_SAMESITE = 'Strict'
+
+    JWT_COOKIE_SECURE = os.getenv('JWT_COOKIE_SECURE')
 
 class TestConfig:
 
