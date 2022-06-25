@@ -3,17 +3,25 @@
 		<div class="drawer-header">
 			<p>{{ prefecture.prefName || "みんなはどこで働くつもりだろう？" }}</p>
 		</div>
-		<div class="comments"></div>
+		<div class="comments">
+			<PrefComment
+				v-for="(comment, index) in comments"
+				:key="index"
+				:userComment="comment"
+			/>
+		</div>
 		<CommentForm @emit-input-comment="postComment" />
 	</div>
 </template>
 
 <script>
 	import axios from "axios";
+	import prefComment from "@/components/PrefComment.vue";
 	import commentForm from "@/interfaces/CommentForm.vue";
 	export default {
 		name: "CommentsBoard",
 		components: {
+			PrefComment: prefComment,
 			CommentForm: commentForm,
 		},
 		props: {
@@ -25,8 +33,8 @@
 				}),
 			},
 			comments: {
-				type: Array || Object,
-				default: () => {},
+				type: Array,
+				default: () => [],
 			},
 		},
 		methods: {
@@ -85,5 +93,13 @@
 	.comments {
 		width: 100%;
 		height: calc(85% - 80px);
+		display: flex;
+		flex-direction: row;
+		align-content: flex-start;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		gap: 15px;
+		overflow-y: scroll;
+		padding: 10px 20px;
 	}
 </style>

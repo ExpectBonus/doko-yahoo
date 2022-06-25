@@ -26,7 +26,10 @@
 			/>
 		</div>
 		<div class="board-drawer">
-			<CommentsBoard :prefecture="selectedPrefecture" />
+			<CommentsBoard
+				:prefecture="selectedPrefecture"
+				:comments="prefectureComments"
+			/>
 		</div>
 	</div>
 </template>
@@ -52,6 +55,7 @@
 				selectedHobbies: [],
 				selectedPrefecture: { prefName: "", prefCode: null },
 				heatMapData: [],
+				prefectureComments: [],
 			};
 		},
 		mounted() {
@@ -64,6 +68,9 @@
 			selectedHobbies: function () {
 				this.getHeatMapData();
 			},
+			selectedPrefecture: function () {
+				this.getPrefectureComments();
+			},
 		},
 		methods: {
 			async getHeatMapData() {
@@ -74,7 +81,7 @@
 						},
 					})
 					.then((res) => {
-						if (res.status == "200") {
+						if (res.status == 200) {
 							this.heatMapData = res.data.data;
 						} else {
 							throw new Error(`status: ${res.status}`);
@@ -83,6 +90,18 @@
 					.catch((error) => {
 						alert("データの取得に失敗しました");
 						console.log(error);
+					});
+			},
+			async getPrefectureComments() {
+				await axios
+					.get(`/api/comments/${this.selectedPrefecture.prefCode}`)
+					.then((res) => {
+						if (res.status == 200) {
+							this.prefectureComments = res.data.comments;
+						}
+					})
+					.catch((error) => {
+						console.error(error);
 					});
 			},
 		},
