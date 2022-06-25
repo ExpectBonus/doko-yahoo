@@ -30,7 +30,7 @@
 					{
 						emoji: "🌐",
 						displayName: "ALL",
-						name: "",
+						name: "all",
 					},
 					{
 						emoji: "💻",
@@ -48,7 +48,7 @@
 						name: "business",
 					},
 				],
-				selectedJobName: "",
+				selectedJobName: "all",
 			};
 		},
 		computed: {

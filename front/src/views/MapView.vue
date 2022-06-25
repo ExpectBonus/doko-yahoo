@@ -23,7 +23,7 @@
 			/>
 		</div>
 		<div class="board-drawer">
-			<Board :prefecture-name="selectedPrefecture" />
+			<CommentsBoard :prefecture="selectedPrefecture" />
 		</div>
 	</div>
 </template>
@@ -33,23 +33,26 @@
 	import jobSelector from "@/components/JobSelector";
 	import hobbiesSelector from "@/components/HobbiesSelector";
 	import heatMap from "@/components/HeatMap.vue";
-	import board from "@/components/Board.vue";
+	import commentsBoard from "@/components/CommentsBoard.vue";
 	export default {
 		name: "MapView",
 		components: {
 			JobSelector: jobSelector,
 			HobbiesSelector: hobbiesSelector,
 			HeatMap: heatMap,
-			Board: board,
+			CommentsBoard: commentsBoard,
 		},
 		data() {
 			return {
 				canViewHobbiesSelector: false,
-				selectedJob: null,
+				selectedJob: "all",
 				selectedHobbies: [],
-				selectedPrefecture: null,
-				heatMapData: {},
+				selectedPrefecture: { prefName: "", prefCode: null },
+				heatMapData: [],
 			};
+		},
+		mounted() {
+			this.getHeatMapData();
 		},
 		methods: {
 			setJob(job) {
@@ -61,22 +64,15 @@
 				this.canViewHobbiesSelector = !this.canViewHobbiesSelector;
 			},
 			async getHeatMapData() {
-				// set dummyData
-				this.heatMapData = {
-					東京都: 1,
-					大阪府: 0.8,
-					愛知県: 0.7,
-					福岡県: 0.2,
-				};
-				/* await axios
-					.get(`/api/heatmap/${selectedJob}`, {
+				await axios
+					.get(`/api/heatmap/${this.selectedJob}`, {
 						params: {
 							hobbies: this.selectedHobbies,
 						},
 					})
 					.then((res) => {
 						if (res.status == "200") {
-							this.heatMapData = { ...res.data };
+							this.heatMapData = res.data.data;
 						} else {
 							throw new Error(`status: ${res.status}`);
 						}
@@ -84,7 +80,7 @@
 					.catch((error) => {
 						alert("データの取得に失敗しました");
 						console.log(error);
-					}); */
+					});
 			},
 		},
 	};
@@ -97,6 +93,9 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		overflow-y: auto;
+		scroll-snap-type: y mandatory;
+		-webkit-overflow-scrolling: touch; /* Important for iOS devices */
 	}
 	header {
 		width: 100%;
@@ -177,11 +176,13 @@
 
 	.contents {
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
+		scroll-snap-align: start;
 	}
 	.board-drawer {
-		position: fixed;
-		bottom: 0;
+		position: relative;
+		top: -15%;
 		width: 100%;
+		scroll-snap-align: start;
 	}
 </style>
