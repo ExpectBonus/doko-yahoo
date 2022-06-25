@@ -45,11 +45,14 @@
 		data() {
 			return {
 				canViewHobbiesSelector: false,
-				selectedJob: null,
+				selectedJob: "all",
 				selectedHobbies: [],
 				selectedPrefecture: { prefName: "", prefCode: null },
-				heatMapData: {},
+				heatMapData: [],
 			};
+		},
+		mounted() {
+			this.getHeatMapData();
 		},
 		methods: {
 			setJob(job) {
@@ -69,7 +72,7 @@
 					})
 					.then((res) => {
 						if (res.status == "200") {
-							this.heatMapData = { ...res.data };
+							this.heatMapData = res.data.data;
 						} else {
 							throw new Error(`status: ${res.status}`);
 						}

@@ -6,6 +6,7 @@
 				v-model="selectedJobName"
 				type="radio"
 				:value="job.name"
+				:checked="job.name == 'all'"
 			/>
 			<label :for="'job' + index">
 				<span class="emoji">{{ job.emoji }}</span>
@@ -42,7 +43,7 @@
 						name: "business",
 					},
 				],
-				selectedJobName: "",
+				selectedJobName: "all",
 			};
 		},
 		watch: {

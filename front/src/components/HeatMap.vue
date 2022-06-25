@@ -18,8 +18,8 @@
 		name: "HeatMap",
 		props: {
 			populationParameters: {
-				type: Object,
-				default: () => {},
+				type: Array,
+				default: () => [],
 			},
 		},
 		data() {
@@ -60,6 +60,7 @@
 				.attr("d", path)
 				.attr("stroke", "#666")
 				.attr("stroke-width", 0.25)
+				.attr("fill", "#FFFFFF")
 				.attr("cursor", "pointer")
 				.on("click", (__, item) => this.clickActions(item));
 
@@ -74,10 +75,7 @@
 			 */
 			repaintMap(data) {
 				this.mapImage.attr("fill", "#FF0033").attr("fill-opacity", (item) => {
-					// 透明度をランダムに指定する (0.0 - 1.0)
-					// console.log(data);
-					console.log(item.properties.name_ja);
-					return data[item.properties.name_ja] || 0.1;
+					return data[Number(item.properties.code) - 1] || 0;
 				});
 			},
 			/**
