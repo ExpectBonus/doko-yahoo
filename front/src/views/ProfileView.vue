@@ -51,15 +51,12 @@
 				<div class="input-form from-pref">
 					<a
 						href="#select-born-pref"
-						v-if="born_pref"
-						class="modal-button-selected"
+						class="modal-button"
+						:class="{ selected: born_pref }"
 					>
 						<div class="show-selected-pref">
-							{{ born_pref }}<span class="arrow-icon">▶️</span>
+							{{ born_pref || "都道府県を選ぶ" }}
 						</div>
-					</a>
-					<a href="#select-born-pref" v-else class="modal-button">
-						<span class="modal-button-text">都道府県を選ぶ</span>
 					</a>
 				</div>
 				<div class="modal-wrapper" id="select-born-pref">
@@ -67,9 +64,9 @@
 					<div class="modal-window">
 						<div class="modal-content">
 							<p class="modal-title">1つ選んでください</p>
-							<span v-if="born_pref" class="selected-born">{{
-								born_pref
-							}}</span>
+							<span v-if="born_pref" class="selected-born">
+								{{ born_pref }}
+							</span>
 							<div
 								class="section-container"
 								v-for="(value, key) in regionPrefs"
@@ -116,16 +113,12 @@
 				<div class="input-form to-pref">
 					<a
 						href="#select-three-pref"
-						v-if="selectedPrefs.length"
-						class="modal-button-selected"
+						class="modal-button"
+						:class="{ selected: selectedPrefs.length }"
 					>
 						<div class="show-selected-pref">
-							<span class="three-pref">{{ printPrefs(selectedPrefs) }}</span
-							><span class="arrow-icon">▶️</span>
+							{{ printPrefs(selectedPrefs) || "都道府県を選ぶ" }}
 						</div>
-					</a>
-					<a href="#select-three-pref" v-else class="modal-button">
-						<span class="modal-button-text">都道府県を選ぶ</span>
 					</a>
 				</div>
 				<div class="modal-wrapper" id="select-three-pref">
@@ -190,10 +183,9 @@
 			</div>
 			<div class="send-button-field">
 				<a href="#">
-					<button v-if="!isClicked" class="send-button" @click="sendUserInfo">
+					<button class="send-button" @click="sendUserInfo">
 						利用を始める
 					</button>
-					<button v-else class="send-button-clicked">利用を始める</button>
 				</a>
 			</div>
 		</div>
@@ -464,6 +456,44 @@
 		justify-content: space-between;
 	}
 
+	/* born_pref */
+	.input-form.from-pref {
+		width: 100%;
+	}
+
+	.modal-button {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		color: #808080;
+		background-color: #eeeeee;
+		border-radius: 10px;
+		cursor: pointer;
+		padding: 10px 20px;
+		text-decoration: none;
+	}
+
+	.modal-button.selected {
+		color: white;
+		font-weight: bold;
+		background-color: #008277;
+	}
+
+	/*アイコンを表示*/
+	.modal-button:after {
+		font-family: "Font Awesome 5 Free";
+		content: "▶";
+	}
+
+	/*ラベルホバー時*/
+	.modal-button:hover {
+		color: #ffffff;
+		background-color: #008277;
+		transition: 0.6s;
+	}
+
 	/* dialog */
 	.label-section {
 		font-family: "Hiragino Kaku Gothic ProN";
@@ -482,7 +512,7 @@
 
 	.prefs-container {
 		/* width: 100%;
-	min-height: 50px; */
+		min-height: 50px; */
 	}
 
 	.input-born-field {
@@ -554,14 +584,6 @@
 		outline-width: 5px;
 	}
 
-	.input-form from-pref {
-		padding: 20px;
-		min-width: 200px;
-		max-width: 350px;
-		text-align: center;
-		margin: 0 auto;
-	}
-
 	.modal-button a {
 		background: #eee;
 		border-radius: 3px;
@@ -607,60 +629,6 @@
 		left: 0;
 		padding: 40px 10px;
 		text-align: center;
-	}
-
-	.modal-button {
-		color: grey;
-		background-color: #eeeeee;
-		font-weight: bold;
-		text-align: center;
-		cursor: pointer;
-		padding: 20px;
-		margin: 20px;
-		/* padding: 12px 2px; */
-		max-width: 300px;
-		left: 200px;
-		text-decoration: none;
-	}
-
-	.modal-button-selected {
-		color: white;
-		background-color: #008277;
-		font-weight: bold;
-		text-align: center;
-		cursor: pointer;
-		font-size: 30px;
-		max-width: 300px;
-		/* padding: 10px 10px 14px 200px; */
-		border-radius: 20px;
-		left: 200px;
-		text-decoration: none;
-	}
-
-	.modal-button-text {
-		padding: 20px;
-		font-size: 20px;
-	}
-
-	.modal-button:active {
-		/*ボタンを押したとき*/
-		-webkit-transform: translateY(2px);
-		transform: translateY(2px);
-		/*下に動く*/
-	}
-
-	/*アイコンを表示*/
-	.modal-button:after {
-		font-family: "Font Awesome 5 Free";
-		content: ">";
-		padding-left: 8px;
-	}
-
-	/*ラベルホバー時*/
-	.modal-button:hover {
-		color: #ffffff;
-		background-color: #008277;
-		transition: 0.6s;
 	}
 
 	.modal-wrapper:not(:target) {
@@ -729,8 +697,8 @@
 	}
 
 	/* .modal-content p {
-	margin: 10px 0 0 0;
-} */
+		margin: 10px 0 0 0;
+	} */
 
 	.modal-overlay {
 		z-index: 10;
@@ -765,10 +733,6 @@
 		font-size: 20px;
 		display: flex;
 		justify-content: space-between !important;
-		background-color: #008277;
-		color: white;
-		padding: 10px 30px 15px 30px;
-		border-radius: 7px;
 	}
 
 	.three-pref {
@@ -776,112 +740,28 @@
 	}
 
 	.send-button {
-		/* margin-top: 30px; */
 		position: relative;
-		z-index: 1;
-		font-size: 18px;
-		overflow: hidden;
-		width: 320px;
+		font-size: 20px;
+		font-weight: bold;
+		width: 100%;
 		padding: 1em;
 		cursor: pointer;
 		line-height: 1.4;
-		transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1),
-			transform 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
 		color: #ffffff;
-		border: none;
-		border-width: 0;
-		border-color: transparent;
+		border: 0 solid transparent;
 		border-radius: 100px;
 		background: #009688;
-	}
-
-	.send-button-clicked {
-		margin-top: 30px;
-		position: relative;
-		z-index: 1;
-		font-size: 18px;
-		overflow: hidden;
-		width: 320px;
-		padding: 1em;
-		cursor: pointer;
-		line-height: 1.4;
-		transition: color 0.3s cubic-bezier(0.02, 0.01, 0.47, 1),
-			transform 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
-		color: #ffffff;
-		border: none;
-		border-width: 0;
-		border-color: transparent;
-		border-radius: 100px;
-		background: grey;
-	}
-
-	.send-button:after,
-	.send-button:before {
-		position: absolute;
-		z-index: -1;
-		right: 0;
-		bottom: 0;
-		width: 100px;
-		height: 100px;
-		content: "";
-		transition: transform 0.15s cubic-bezier(0.02, 0.01, 0.47, 1),
-			opacity 0.15s cubic-bezier(0.02, 0.01, 0.47, 1);
-		-webkit-transform: translate(100%, -25%) translateZ(0);
-		transform: translate(100%, -25%) translateZ(0);
-		opacity: 0;
-		border-radius: 50%;
-		background: #009688;
-	}
-
-	.send-button:after,
-	.send-button:before {
-		background: #ffffff;
-	}
-
-	.send-button:hover {
-		transition: all 0.5s cubic-bezier(0.02, 0.01, 0.47, 1);
-		-webkit-transform: scale(1.1) translateZ(0);
-		transform: scale(1.1) translateZ(0);
-		color: #ffffff;
-		box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-	}
-
-	.send-button:hover:before {
-		transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1),
-			opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-		-webkit-transform: translate3d(50%, 0, 0) scale(0.9);
-		transform: translate3d(50%, 0, 0) scale(0.9);
-		opacity: 0.15;
-	}
-
-	.send-button:hover:after {
-		transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1) 0.05s,
-			opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1) 0.05s;
-		-webkit-transform: translate(50%) scale(1.1);
-		transform: translate(50%) scale(1.1);
-		opacity: 0.25;
 	}
 
 	.send-button:active {
 		opacity: 0.5;
 	}
 
-	.send-button:focus {
-		color: #ffffff;
-	}
-
 	.send-button-field {
-		margin-top: 40px;
-		/* margin-bottom: 20px; */
+		width: 100%;
 	}
 
 	/* loading */
-	*,
-	*:before,
-	*:after {
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-	}
 
 	.loading {
 		position: absolute;
