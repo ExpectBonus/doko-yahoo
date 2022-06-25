@@ -39,7 +39,7 @@
 					.then((response) => {
 						if ((response.status = 201)) {
 							/** 成功処理 */
-							this.inputText = "";
+							console.log(response);
 						}
 					})
 					.catch((error) => {
