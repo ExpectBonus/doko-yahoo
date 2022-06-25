@@ -32,11 +32,6 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    populationParameters: function (newData, oldData) {
-      this.repaintMap(newData);
-    },
-  },
   mounted() {
     // 地図の投影設定
     const projection = d3
