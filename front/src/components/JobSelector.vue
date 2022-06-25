@@ -1,12 +1,11 @@
 <template>
 	<div id="jobs-selector">
-		<div v-for="(job, index) in jobs_list" class="job" :key="index">
+		<div v-for="(job, index) in showJobsList" class="job" :key="index">
 			<input
 				:id="'job' + index"
 				v-model="selectedJobName"
 				type="radio"
 				:value="job.name"
-				:checked="job.name == 'all'"
 			/>
 			<label :for="'job' + index">
 				<span class="emoji">{{ job.emoji }}</span>
@@ -19,9 +18,15 @@
 <script>
 	export default {
 		name: "JobSelector",
+		props: {
+			includeAll: {
+				type: Boolean,
+				default: true,
+			},
+		},
 		data() {
 			return {
-				jobs_list: [
+				jobsList: [
 					{
 						emoji: "🌐",
 						displayName: "ALL",
@@ -46,6 +51,11 @@
 				selectedJobName: "all",
 			};
 		},
+		computed: {
+			showJobsList() {
+				return this.includeAll ? this.jobsList : this.jobsList.slice(1);
+			},
+		},
 		watch: {
 			selectedJobName: function (newValue, oldValue) {
 				this.$emit("selectedJob", newValue);
@@ -59,12 +69,11 @@
 		font-family: MyFontFamily, sans-serif;
 		position: relative;
 		width: 100%;
-		height: 3rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-around;
-		gap: 10px;
+		column-gap: 5px;
 		overflow: auto;
 		padding: 2px;
 	}
@@ -93,13 +102,14 @@
 		width: 100%;
 		height: 100%;
 		text-align: center;
+		font-size: 20px;
 		font-weight: bold;
 		white-space: nowrap;
 		color: #292929;
 		background-color: #d9d9d9;
 		border-radius: 10px;
 		border: 1px solid #d9d9d9;
-		padding: 0.3rem;
+		padding: 5px 10px;
 		transition: all 0.3s ease-out;
 	}
 
