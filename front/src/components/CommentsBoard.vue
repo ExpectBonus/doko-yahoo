@@ -1,7 +1,7 @@
 <template>
 	<div id="comments-board">
 		<div class="drawer-header">
-			<p>{{ prefecture.name || "みんなはどこで働くつもりだろう？" }}</p>
+			<p>{{ prefecture.prefName || "みんなはどこで働くつもりだろう？" }}</p>
 		</div>
 		<div class="comments"></div>
 		<CommentForm @emit-input-comment="postComment" />
@@ -19,9 +19,10 @@
 		props: {
 			prefecture: {
 				type: Object,
-				default: () => {
-					return { id: null, name: "" };
-				},
+				default: () => ({
+					prefName: "",
+					prefCode: null,
+				}),
 			},
 			comments: {
 				type: Array || Object,
@@ -31,7 +32,7 @@
 		methods: {
 			async postComment(comment) {
 				const result = await axios
-					.post(`/api/comments/${this.prefecture.id}`, {
+					.post(`/api/comments/${this.prefecture.prefCode}`, {
 						id: 1, //TODO: this.userId,
 						comment: comment,
 					})

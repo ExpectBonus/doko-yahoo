@@ -47,7 +47,7 @@
 				canViewHobbiesSelector: false,
 				selectedJob: null,
 				selectedHobbies: [],
-				selectedPrefecture: {},
+				selectedPrefecture: null,
 				heatMapData: {},
 			};
 		},

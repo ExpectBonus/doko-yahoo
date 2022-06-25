@@ -88,10 +88,9 @@
 				d3.select("#map-container svg g").attr("transform", event.transform);
 			},
 			clickActions(item) {
-				console.log(item);
 				this.$emit("clickedPrefecture", {
-					name: item.properties.name_ja,
-					id: 1, //TODO: 都道府県番号を設定できるように
+					prefName: item.properties.name_ja,
+					prefCode: item.properties.code,
 				});
 			},
 		},
