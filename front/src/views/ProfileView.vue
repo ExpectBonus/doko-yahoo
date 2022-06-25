@@ -126,7 +126,7 @@
 					<div class="modal-window">
 						<div class="modal-content">
 							<p class="modal-title">最大3つまで選んでください</p>
-							<div v-if="isSelectedPrefs()" class="show-prefs-container">
+							<div v-if="selectedPrefs.length" class="show-prefs-container">
 								<div v-for="(pref, index) in selectedPrefs" :key="index">
 									<span class="selected-born"
 										>第{{ index + 1 }}希望：{{ pref }}</span
@@ -155,7 +155,10 @@
 												name="three"
 												:value="pref"
 												v-model="selectedPrefs"
-												:disabled="isAllPrefs(pref)"
+												:disabled="
+													this.selectedPrefs.length >= 3 &&
+													this.selectedPrefs.indexOf(pref) == -1
+												"
 											/>
 											<label :for="getPrefIndex(pref)" class="label-born">
 												<span class="pref-field">{{ pref }}</span>
@@ -296,20 +299,6 @@
 					err_f = true;
 				}
 				return err_f;
-			},
-			isSelectedPrefs: function () {
-				if (this.selectedPrefs.length == 0) {
-					return false;
-				}
-				return true;
-			},
-			isAllPrefs: function (pref) {
-				if (this.selectedPrefs.length >= 3) {
-					if (this.selectedPrefs.indexOf(pref) == -1) {
-						return true;
-					}
-				}
-				return false;
 			},
 			setErrorMsg: function () {
 				if (this.shortName_f) {
