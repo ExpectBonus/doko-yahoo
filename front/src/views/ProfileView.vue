@@ -277,12 +277,12 @@
 				let params = {
 					id: uid,
 					username: this.username,
-					job: this.job,
+					job: this.selectedJob,
 					born_pref: this.getPrefIndex(this.born_pref),
 					first_pref: this.getPrefIndex(this.selectedPrefs[0]),
 					second_pref: this.getPrefIndex(this.selectedPrefs[1]),
 					third_pref: this.getPrefIndex(this.selectedPrefs[2]),
-					hobbies: this.checkedHobbies,
+					hobbies: this.selectedHobbies,
 				};
 				this.params = params;
 				console.log(params);
@@ -302,7 +302,7 @@
 					this.shortName_f = true;
 					err_f = true;
 				}
-				if (!this.job) {
+				if (!this.selectedJob) {
 					this.selectJob_f = true;
 					err_f = true;
 				}
