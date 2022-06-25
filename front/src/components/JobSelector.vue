@@ -73,6 +73,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-around;
+		column-gap: 5px;
 		overflow: auto;
 		padding: 2px;
 	}

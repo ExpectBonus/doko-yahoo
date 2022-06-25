@@ -382,7 +382,8 @@
 
 	.content {
 		width: 100%;
-		max-width: 500px;
+		max-width: 600px;
+		padding: 0 10px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
