@@ -32,11 +32,6 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    populationParameters: function (newData, oldData) {
-      this.repaintMap(newData);
-    },
-  },
   mounted() {
     // 地図の投影設定
     const projection = d3
@@ -67,6 +62,12 @@ export default {
     let zoomHandler = d3.zoom().on("zoom", this.zoomActions);
     zoomHandler(d3.select("#map-container svg"));
   },
+  watch: {
+    populationParameters: function (newData, oldData) {
+      this.repaintMap(newData);
+    },
+  },
+
   methods: {
     /**
      * 地図の塗替え
