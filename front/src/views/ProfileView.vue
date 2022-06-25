@@ -8,7 +8,7 @@
 			<h2>プロフィールを登録しましょう</h2>
 			<p>(必須項目 *)</p>
 		</header>
-		<div v-if="isError" class="error-msg">
+		<div v-if="errorMsg.length" class="error-msg">
 			<span v-for="(err, index) in errorMsg" :key="index">
 				{{ err }}
 				<br />
@@ -220,7 +220,6 @@
 				isClicked: false,
 				// error flag
 				errorMsg: [],
-				isError: false,
 				shortName_f: false,
 				selectJob_f: false,
 				selectBorn_f: false,
@@ -245,60 +244,42 @@
 			},
 		},
 		methods: {
-			sendUserInfo: function () {
+			sendUserInfo: async function () {
 				let err_f;
 
 				// for deactivate submit button
 				this.initFlag();
 
+				// 空値チェック
 				err_f = this.checkParams();
 				if (err_f) {
 					// for resubmit
 					this.isClicked = false;
-					this.isError = true;
 					this.setErrorMsg();
 					return;
 				}
-				this.makeParams();
-				axios
-					.post("http://localhost:5001/api/user/", this.params)
+				await axios
+					.post("/api/user/", {
+						provider_id: 1234,
+						username: this.username,
+						job: this.selectedJob,
+						born_pref: this.getPrefIndex(this.born_pref),
+						first_pref: this.getPrefIndex(this.selectedPrefs[0]),
+						second_pref: this.getPrefIndex(this.selectedPrefs[1]),
+						third_pref: this.getPrefIndex(this.selectedPrefs[2]),
+						hobbies: this.selectedHobbies,
+					})
 					.then(function (res) {
-						this.resData = res;
-						console.log(res);
+						console.log(`user id: ${res.data}`);
 					})
 					.catch(function (err) {
 						console.log(err);
 					});
 			},
-			makeParams: function () {
-				let uid;
-
-				uid = 1234;
-				let params = {
-					id: uid,
-					username: this.username,
-					job: this.selectedJob,
-					born_pref: this.getPrefIndex(this.born_pref),
-					first_pref: this.getPrefIndex(this.selectedPrefs[0]),
-					second_pref: this.getPrefIndex(this.selectedPrefs[1]),
-					third_pref: this.getPrefIndex(this.selectedPrefs[2]),
-					hobbies: this.selectedHobbies,
-				};
-				this.params = params;
-				console.log(params);
-			},
 			checkParams: function () {
-				// if (!isUniqueId(params["id"])) {
-				//   return true;
-				// }
-
-				let name;
 				let err_f = false;
-				let errorColumns = [];
-
-				name = this.name.length;
-				born = this.born;
-				if (name == 0) {
+				// 値存在チェック
+				if (!this.username) {
 					this.shortName_f = true;
 					err_f = true;
 				}
@@ -306,22 +287,15 @@
 					this.selectJob_f = true;
 					err_f = true;
 				}
-				if (!this.born) {
+				if (!this.born_pref) {
 					this.selectBorn_f = true;
 					err_f = true;
 				}
-				if (!this.first) {
+				if (!this.selectedPrefs) {
 					this.selectFirst_f = true;
 					err_f = true;
 				}
-
-				// if (name <= 0 && 30 <= name && isUniqueName(name)) {
-				//   return true;
-				// }
-				if (err_f) {
-					return true;
-				}
-				return false;
+				return err_f;
 			},
 			isSelectedPrefs: function () {
 				if (this.selectedPrefs.length == 0) {
@@ -339,23 +313,21 @@
 			},
 			setErrorMsg: function () {
 				if (this.shortName_f) {
-					this.errorMsg[this.errorMsg.length] = "名前を入力してください。";
+					this.errorMsg.push("名前を入力してください。");
 				}
 				if (this.selectJob_f) {
-					this.errorMsg[this.errorMsg.length] = "職業を選んでください。";
+					this.errorMsg.push("職業を選んでください。");
 				}
 				if (this.selectBorn_f) {
-					this.errorMsg[this.errorMsg.length] = "出身地を選んでください。";
+					this.errorMsg.push("出身地を選んでください。");
 				}
 				if (this.selectFirst_f) {
-					this.errorMsg[this.errorMsg.length] =
-						"住みたい都道府県の第1希望を選んでください。";
+					this.errorMsg.push("住みたい都道府県の第1希望を選んでください。");
 				}
 			},
 			initFlag: function () {
 				this.isClicked = true;
 				this.errorMsg = [];
-				this.isError = false;
 				this.shortName_f = false;
 				this.selectJob_f = false;
 				this.shortBorn_f = false;
