@@ -2,13 +2,16 @@
 	<div id="map-view">
 		<header>
 			<h1><span class="doko">どこ</span><span class="yahoo">ヤフ</span></h1>
-			<JobSelector @selectedJob="setJob" />
+			<JobSelector @selectedJob="selectedJob = $event" />
 			<div class="hobbies-selector-drawer">
 				<HobbiesSelector
 					v-show="canViewHobbiesSelector"
 					@selectedHobbies="selectedHobbies = $event"
 				/>
-				<div class="draw-opener" @click="drawHobbiesSelector">
+				<div
+					class="draw-opener"
+					@click="canViewHobbiesSelector = !canViewHobbiesSelector"
+				>
 					<button
 						class="arrow"
 						:class="{ active: canViewHobbiesSelector }"
@@ -54,15 +57,15 @@
 		mounted() {
 			this.getHeatMapData();
 		},
-		methods: {
-			setJob(job) {
-				this.selectedJob = job;
+		watch: {
+			selectedJob: function () {
 				this.getHeatMapData();
 			},
-			drawHobbiesSelector() {
-				this.canViewHobbiesSelector && this.getHeatMapData();
-				this.canViewHobbiesSelector = !this.canViewHobbiesSelector;
+			selectedHobbies: function () {
+				this.getHeatMapData();
 			},
+		},
+		methods: {
 			async getHeatMapData() {
 				await axios
 					.get(`/api/heatmap/${this.selectedJob}`, {

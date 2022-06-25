@@ -262,8 +262,8 @@
 					return;
 				}
 				await axios
-					.post("/api/user/", {
-						provider_id: 1234,
+					.post("/api/user", {
+						provider_id: 1,
 						username: this.username,
 						job: this.selectedJob,
 						born_pref: this.getPrefIndex(this.born_pref),
@@ -274,6 +274,7 @@
 					})
 					.then(function (res) {
 						console.log(`user id: ${res.data}`);
+						this.$router.push({ name: "map" });
 					})
 					.catch(function (err) {
 						console.log(err);
