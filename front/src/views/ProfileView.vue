@@ -510,11 +510,6 @@
 		min-width: 150px;
 	}
 
-	.prefs-container {
-		/* width: 100%;
-		min-height: 50px; */
-	}
-
 	.input-born-field {
 		/* border: 1px solid #1b2538; */
 		clip: rect(1px, 1px, 1px, 1px);
@@ -547,9 +542,6 @@
 		border: 2px solid grey;
 		background-color: #d9d9d9;
 		transition: all 0.3s;
-	}
-
-	.label-born-field {
 	}
 
 	.selected-born {
