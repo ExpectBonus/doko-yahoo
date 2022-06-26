@@ -1,4 +1,4 @@
-from db import db,ma
+from db import db
 from datetime import datetime
 
 PREFECTURES = ["北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県",
@@ -23,14 +23,6 @@ class User(db.Model):
     second_pref = db.Column(db.Integer)
     third_pref = db.Column(db.Integer)
     password = db.Column(db.String(255), nullable=False)
-
-class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        # モデルのプロパティ（テーブルのカラム）を全てスキーマに適用する
-        model = User
-
-    # dumpするときに表示させない
-    password = ma.auto_field(load_only=True)
 
 # 趣味の一覧
 class Hobby(db.Model):

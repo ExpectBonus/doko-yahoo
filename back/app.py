@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
+from datetime import timedelta
+
 from db import init_db
 
 from controllers.user_controller import user_blueprint
@@ -11,12 +13,10 @@ from controllers.login_controller import auth_blueprint
 import models
 
 app = Flask(__name__)
-jwt = JWTManager()
+jwt = JWTManager(app)
 
 app.config["JWT_SECRET_KEY"] = "super-secret"
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 
 # アプリ設定の読み込み
 app.config.from_object('config.DevelopmentConfig')
@@ -29,8 +29,6 @@ app.register_blueprint(user_blueprint)
 app.register_blueprint(comment_blueprint)
 app.register_blueprint(heatmap_blueprint)
 app.register_blueprint(auth_blueprint)
-
-jwt.init_app(app)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')

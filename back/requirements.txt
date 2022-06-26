@@ -4,7 +4,4 @@ sqlalchemy == 1.4.37
 psycopg2 == 2.9.3
 Flask-Migrate == 3.1.0
 pytest == 7.1.2
-flask_marshmallow == 0.14.0
-marshmallow == 3.16.0
-marshmallow-sqlalchemy == 0.28.0
 Flask_JWT_Extended == 4.4.1
