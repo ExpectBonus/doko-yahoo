@@ -53,6 +53,7 @@
 						if ((response.status = 201)) {
 							/** 成功処理 */
 							console.log(response);
+							this.$emit("postComment", comment);
 						}
 					})
 					.catch((error) => {

@@ -29,6 +29,7 @@
 			<CommentsBoard
 				:prefecture="selectedPrefecture"
 				:comments="prefectureComments"
+				@postComment="pushPostComment"
 			/>
 		</div>
 	</div>
@@ -103,6 +104,13 @@
 					.catch((error) => {
 						console.error(error);
 					});
+			},
+			pushPostComment(comment) {
+				this.prefectureComments.push({
+					born_pref: 1, //TODO: this.user.born_pref
+					comment: comment,
+					job: "engineer", //TODO: this.user.job
+				});
 			},
 		},
 	};
