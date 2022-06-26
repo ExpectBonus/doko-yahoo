@@ -9,6 +9,7 @@
 				:key="index"
 				:userComment="comment"
 			/>
+			<div v-if="!comments.length" class="no-comment">No Comment👺</div>
 		</div>
 		<CommentForm class="comment-form" @emit-input-comment="postComment" />
 	</div>
@@ -103,6 +104,14 @@
 		gap: 15px;
 		overflow-y: scroll;
 		padding: 10px 20px;
+	}
+	.no-comment {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 3rem;
 	}
 	.comment-form {
 		position: absolute;
