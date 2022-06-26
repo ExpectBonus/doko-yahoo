@@ -54,7 +54,7 @@
 				selectedJob: "all",
 				selectedHobbies: [],
 				selectedPrefecture: { prefName: "", prefCode: null },
-				heatMapData: [],
+				heatMapData: {},
 				prefectureComments: [],
 			};
 		},
@@ -82,7 +82,7 @@
 					})
 					.then((res) => {
 						if (res.status == 200) {
-							this.heatMapData = res.data.data;
+							this.heatMapData = { ...res.data.data };
 						} else {
 							throw new Error(`status: ${res.status}`);
 						}

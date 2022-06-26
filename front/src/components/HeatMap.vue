@@ -18,8 +18,8 @@
 		name: "HeatMap",
 		props: {
 			populationParameters: {
-				type: Array,
-				default: () => [],
+				type: Object,
+				default: () => {},
 			},
 		},
 		data() {
@@ -34,6 +34,7 @@
 		computed: {},
 		watch: {
 			populationParameters: function (newData, oldData) {
+				console.log(newData);
 				this.repaintMap(newData);
 			},
 		},
@@ -75,7 +76,7 @@
 			 */
 			repaintMap(data) {
 				this.mapImage.attr("fill", "#FF0033").attr("fill-opacity", (item) => {
-					return data[Number(item.properties.code) - 1] || 0;
+					return data[item.properties.name_ja] || 0;
 				});
 			},
 			/**
