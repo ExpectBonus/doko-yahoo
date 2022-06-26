@@ -1,9 +1,9 @@
 <template>
-	<div id="comments-board">
+	<div id="comments-board" :class="{ shrink: !prefecture.prefName }">
 		<div class="drawer-header">
 			<p>{{ prefecture.prefName || "みんなはどこで働くつもりだろう？" }}</p>
 		</div>
-		<div class="comments">
+		<div class="comments" v-show="prefecture.prefName">
 			<PrefComment
 				v-for="(comment, index) in comments"
 				:key="index"
@@ -11,19 +11,23 @@
 			/>
 			<div v-if="!comments.length" class="no-comment">No Comment👺</div>
 		</div>
-		<CommentForm class="comment-form" @emit-input-comment="postComment" />
+		<CommentForm
+			v-show="prefecture.prefName"
+			class="comment-form"
+			@emit-input-comment="postComment"
+		/>
 	</div>
 </template>
 
 <script>
 	import axios from "axios";
-	import prefComment from "@/components/PrefComment.vue";
-	import commentForm from "@/interfaces/CommentForm.vue";
+	import PrefComment from "@/components/PrefComment.vue";
+	import CommentForm from "@/interfaces/CommentForm.vue";
 	export default {
 		name: "CommentsBoard",
 		components: {
-			PrefComment: prefComment,
-			CommentForm: commentForm,
+			PrefComment,
+			CommentForm,
 		},
 		props: {
 			prefecture: {
@@ -83,6 +87,13 @@
 		top: 5px;
 		left: 40%;
 	}
+	#comments-board.shrink {
+		height: 80px;
+	}
+	#comments-board.shrink::before {
+		display: none;
+	}
+
 	.drawer-header {
 		width: 100%;
 		height: 80px;
