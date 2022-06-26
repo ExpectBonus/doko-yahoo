@@ -79,6 +79,7 @@ curl localhost:5001/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobb
 
 ### ログイン
 - アクセストークンの取得
+- アクセストークンは1時間で期限切れ
 ```
 curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d '{"username": "ほげほげ", "password": "abc123"}' localhost:5001/api/auth/
 ```
