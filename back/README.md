@@ -35,6 +35,7 @@ curl -X 'POST'   'localhost:5001/user/'   -H 'accept: application/json'   -H 'Co
   "first_pref": 1,
   "second_pref": 2,
   "third_pref": 5,
+  "password": "abc123" <- 追加
   "hobbies": [
     "酒好き",
     "ゲーマー",
@@ -75,6 +76,20 @@ curl localhost:5001/comments/47
 ```
 curl localhost:5001/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobbies=ピアノ
 ```
+
+### ログイン
+- アクセストークンの取得
+'''
+curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d '{"username": "ほげほげ", "password": "abc123"}' localhost:5001/api/auth/
+'''
+'''
+"access_token": ACCESS_TOKEN
+'''
+
+- JWTの有効性を検証
+'''
+curl localhost:5001/api/auth/protected -H "Authorization: Bearer ACCESS_TOKEN"
+'''
 
 ## 実装するうえで参考になる情報
 - controllersに各エンドポイントを実装している
