@@ -79,18 +79,20 @@ curl localhost:5001/heatmap/engineer?hobbies=酒好き&hobbies=ゲーマー&hobb
 
 ### ログイン
 - アクセストークンの取得
-- アクセストークンは1時間で期限切れ
 ```
 curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d '{"username": "ほげほげ", "password": "abc123"}' localhost:5001/api/auth/
 ```
+↓が出てくる
 ```
 "access_token": ACCESS_TOKEN
 ```
+アクセストークンは1時間で期限切れ
 
 - JWTの有効性を検証
 ```
 curl localhost:5001/api/auth/protected -H "Authorization: Bearer ACCESS_TOKEN"
 ```
+↓が出てくる
 ```
 "logged_in_as": "\"<User id>\""
 ```
