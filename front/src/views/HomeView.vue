@@ -1,18 +1,11 @@
 <template>
-  <!-- <hello-world /> -->
-  <ProfileView />
+	<div>HOME</div>
 </template>
 
 <script>
-// import HelloWorld from "../components/HelloWorld";
-import ProfileView from "./ProfileView";
+	export default {
+		name: "HomeView",
 
-export default {
-  name: "HomeView",
-
-  components: {
-    // HelloWorld,
-    ProfileView,
-  },
-};
+		components: {},
+	};
 </script>
