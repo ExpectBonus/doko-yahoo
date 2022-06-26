@@ -195,8 +195,8 @@
 	</div>
 </template>
 <script>
-	import { prefectures as prefs } from "./prefectures.js";
-	import { regionPrefs } from "./prefectures.js";
+	import { prefectures as prefs } from "../assets/prefectures.js";
+	import { regionPrefs } from "../assets/prefectures.js";
 	import jobSelector from "@/components/JobSelector.vue";
 	import hobbiesSelector from "@/components/HobbiesSelector.vue";
 	import axios from "axios";

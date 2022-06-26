@@ -5,15 +5,20 @@
 		</span>
 		<div class="comment-userinfo">
 			<div class="comment-job">
-				<span class="comment-job-text">{{ userComment.job }}</span>
+				<span class="comment-job-text">
+					{{ jobTranslator(userComment.job) }}
+				</span>
 			</div>
 			<div class="comment-born">
-				<span class="comment-born-text">{{ userComment.born_pref }}</span>
+				<span class="comment-born-text">
+					出身: {{ prefCodeToName(Number(userComment.born_pref)) }}
+				</span>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
+	import { prefectures as prefArray } from "@/assets/prefectures.js";
 	export default {
 		name: "PrefComment",
 		props: {
@@ -21,6 +26,19 @@
 				type: Object,
 				default: () => {},
 				required: true,
+			},
+		},
+		methods: {
+			prefCodeToName(prefCode) {
+				return prefArray[prefCode];
+			},
+			jobTranslator(job) {
+				const jobsDict = {
+					engineer: "エンジニア",
+					designer: "デザイナー",
+					business: "ビジネス",
+				};
+				return jobsDict[job];
 			},
 		},
 	};
