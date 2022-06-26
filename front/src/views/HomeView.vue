@@ -6,13 +6,18 @@
 			<p><span>どこでヤフー社員が</span><span>働いているかな</span></p>
 			<p><span>自分もどこで</span><span>働こうかな</span></p>
 		</div>
-		<button class="login">Googleアカウントで始める</button>
+		<button class="login" @click="login">Googleアカウントで始める</button>
 	</div>
 </template>
 
 <script>
 	export default {
 		name: "HomeView",
+		methods: {
+			login() {
+				this.$router.push({ name: "profile" });
+			},
+		},
 	};
 </script>
 
