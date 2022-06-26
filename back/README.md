@@ -35,7 +35,7 @@ curl -X 'POST'   'localhost:5001/user/'   -H 'accept: application/json'   -H 'Co
   "first_pref": 1,
   "second_pref": 2,
   "third_pref": 5,
-  "password": "abc123" <- 追加
+  "password": "abc123", <- 追加
   "hobbies": [
     "酒好き",
     "ゲーマー",
