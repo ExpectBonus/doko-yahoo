@@ -10,7 +10,7 @@
 				:userComment="comment"
 			/>
 		</div>
-		<CommentForm @emit-input-comment="postComment" />
+		<CommentForm class="comment-form" @emit-input-comment="postComment" />
 	</div>
 </template>
 
@@ -64,6 +64,7 @@
 		position: relative;
 		width: 100%;
 		height: 100vh;
+		height: 100dvh; /* for iOS */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -83,17 +84,17 @@
 	}
 	.drawer-header {
 		width: 100%;
-		height: 15%;
+		height: 80px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		font-size: 24px;
+		font-size: 20px;
 		font-weight: bold;
 	}
 	.comments {
 		width: 100%;
-		height: calc(85% - 80px);
+		max-height: calc(100% - 160px);
 		display: flex;
 		flex-direction: row;
 		align-content: flex-start;
@@ -102,5 +103,9 @@
 		gap: 15px;
 		overflow-y: scroll;
 		padding: 10px 20px;
+	}
+	.comment-form {
+		position: absolute;
+		bottom: 0;
 	}
 </style>

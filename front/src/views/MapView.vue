@@ -203,7 +203,7 @@
 	}
 	.board-drawer {
 		position: relative;
-		top: -15%;
+		top: -80px;
 		width: 100%;
 		scroll-snap-align: start;
 	}

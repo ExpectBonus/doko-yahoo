@@ -40,16 +40,18 @@
 <style scoped>
 	.comment-form {
 		width: 100%;
+		height: 80px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
 		column-gap: 10px;
-		padding: 20px;
+		padding: 5px 20px;
 	}
 	.text-input-container {
 		position: relative;
 		width: calc(100% - 50px);
+		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -69,6 +71,7 @@
 	}
 	.text-input-container textarea {
 		width: 100%;
+		height: 100%;
 		resize: none;
 		margin: 5px 10px;
 		border: none;
