@@ -206,7 +206,7 @@
 					hobbies: this.selectedHobbies,
 				};
 				await axios
-					.post("/api/user", {
+					.post("/api/user/", {
 						...params,
 						token: this.userIdToken,
 					})
