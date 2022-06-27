@@ -50,7 +50,7 @@ paths:
       tags:
         - user
       summary: ユーザ情報の取得
-      description: 指定した認証プロバイダIDのユーザ情報を取得する。まだバックエンドに登録されていなければ404を返す。
+      description: 渡されたIDトークンの示すユーザ情報を取得する。まだバックエンドに登録されていなければ404を返す。
       operationId: getUser
       parameters:
         - name: token
@@ -67,6 +67,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUserResponse'
+        '400':
+          description: Invalid ID token
         '404':
           description: User does not exist yet
   /user:
