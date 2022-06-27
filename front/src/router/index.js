@@ -22,6 +22,12 @@ const routes = [
 		path: "/map",
 		name: "map",
 		component: MapView,
+		beforeEnter: (to, from, next) => {
+			if (!store.state.userInfo) {
+				store.dispatch("getUserInfo", $store.state.userIdToken);
+			}
+			store.state.userInfo ? next() : next({ name: home });
+		},
 	},
 ];
 
