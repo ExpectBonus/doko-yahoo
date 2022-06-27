@@ -572,6 +572,9 @@
 	.modal-wrapper {
 		z-index: 999;
 		position: fixed;
+		width: 100%;
+		height: 100vh;
+		height: 100dvh;
 		top: 0;
 		right: 0;
 		bottom: 0;
@@ -605,6 +608,7 @@
 		display: inline-block;
 		z-index: 20;
 		position: relative;
+		width: 100%;
 		max-width: 700px;
 		padding: 10px 30px 25px;
 		border-radius: 2px;
@@ -652,6 +656,8 @@
 	.modal-overlay {
 		z-index: 10;
 		position: absolute;
+		width: 100%;
+		height: 100%;
 		top: 0;
 		right: 0;
 		bottom: 0;
