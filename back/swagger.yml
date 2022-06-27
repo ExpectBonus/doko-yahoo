@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+  description: This is the API prototype of the doko-yahoo backend.
+  version: 1.0.0-oas3
+  title: doko-yahoo
+tags:
+  - name: user
+    description: Operations about user
+  - name: comments
+    description: Operations about comments on prefectures
+  - name: heatmap
+    description: Operations about heatmap
+paths:
+  /heatmap/{job}:
+    get:
+      tags:
+        - heatmap
+      summary: プレヤフヒートマップの取得
+      description: パスで職種を、クエリ文字列で趣味リストを指定(リストの趣味を全て持つユーザに絞り込む)。指定しなければ全ユーザをカウント。返却値は長さ47の小数配列。小数は0から1の値をとる。
+      operationId: getHeatmap
+      parameters:
+        - name: job
+          in: path
+          description: 職種。engineer or designer or business or all。指定なしならall。
+          required: true
+          schema:
+            type: string
+            enum:
+            - all
+            - engineer 
+            - designer
+            - business
+          example: engineer
+        - name: hobbies
+          in: query
+          description: 趣味リスト。文字列配列。
+          schema:
+            $ref: "#/components/schemas/Hobbies"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetHeatmapResponse'
+        '400':
+          description: Invalid attribute
+  /user/{token}:
+    get:
+      tags:
+        - user
+      summary: ユーザ情報の取得
+      description: 指定した認証プロバイダIDのユーザ情報を取得する。まだバックエンドに登録されていなければ404を返す。
+      operationId: getUser
+      parameters:
+        - name: token
+          in: path
+          description: IDトークン。
+          required: true
+          schema:
+            type: string
+          example: some_token
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '404':
+          description: User does not exist yet
+  /user:
+    post:
+      tags:
+        - user
+      summary: ユーザ情報の登録
+      description: ボディにユーザ情報JSONを入れてリクエスト。登録/更新の後にバックエンド側のユーザIDを返す。
+      operationId: postUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUserRequest'
+        description: ユーザ情報登録/更新用JSON。
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostUserResponse'
+        '400':
+          description: Invalid information
+        '500':
+          description: Internal server error
+  /user/{userID}:
+    delete:
+      tags:
+        - user
+      summary: ユーザ情報の削除
+      operationId: deleteUser
+      parameters:
+        - name: userID
+          in: path
+          description: 削除したいユーザID
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 42
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid user ID
+  /comments/{prefectureID}:
+    get:
+      tags:
+        - comments
+      summary: 指定した都道府県へのコメントリストを取得
+      description: パスに都道府県IDを指定すると、その都道府県に対する(コメント・職種・出身地)のリストを返す
+      operationId: getCommentsByPrefecture
+      parameters:
+        - name: prefectureID
+          in: path
+          description: 都道府県ID(1-47)。
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 25
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCommentsResponse'
+        '400':
+          description: Invalid prefecture ID
+    post:
+      tags:
+        - comments
+      summary: 指定した都道府県へのコメントを投稿
+      description: パスに都道府県IDを指定、ボディにユーザIDとコメント本体を入れてコメントを登録する。
+      operationId: postComment
+      parameters:
+        - name: prefectureID
+          in: path
+          description: 都道府県ID(1-47)。
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 25
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCommentRequest'
+        description: コメント投稿用JSON。idはバックエンドユーザID、commentはコメント本体。
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+        '400':
+          description: Invalid prefecture ID or user ID
+servers:
+  - url: https://virtserver.swaggerhub.com/ExpectBonus.js/doko-yahoo/1.0.0
+  - url: http://virtserver.swaggerhub.com/ExpectBonus.js/doko-yahoo/1.0.0
+components:
+  schemas:
+    Hobbies:
+      description: 趣味リスト。文字列配列。
+      type: array
+      items:
+        type: string
+      example:
+        - 酒好き
+        - ゲーマー
+    GetUserResponse:
+      description: GET /user/{providerID} のレスポンス。
+      type: object
+      properties:
+        id:
+          description: バックエンドID。
+          type: integer
+          format: int64
+          example: 10
+        username:
+          description: ユーザ名
+          type: string
+          example: ほげほげ
+        job:
+          description: 職種。engineer or designer or business
+          type: string
+          enum:
+          - engineer
+          - designer
+          - business
+        born_pref:
+          description: 出身都道府県(1-47)。海外を48に？
+          type: integer
+          format: int64
+          example: 46
+        first_pref:
+          description: 第一希望都道府県(1-47)。
+          type: integer
+          format: int64
+          example: 1
+        second_pref:
+          description: 第二希望都道府県(1-47)。
+          type: integer
+          format: int64
+          example: 2
+        third_pref:
+          description: 第三希望都道府県(1-47)。
+          type: integer
+          format: int64
+          example: 3
+        hobbies:
+          $ref: '#/components/schemas/Hobbies'
+    PostUserRequest:
+      description: POST /user のリクエストボディ。
+      type: object
+      properties:
+        token:
+          description: 認証プロバイダからのIDトークン。
+          type: string
+          example: some_token
+        username:
+          description: ユーザ名
+          type: string
+          example: ほげほげ
+        job:
+          description: 職種。engineer or designer or business
+          type: string
+          enum:
+          - engineer
+          - designer
+          - business
+        born_pref:
+          description: 出身都道府県(1-47)。海外を48に？
+          type: integer
+          format: int64
+          example: 46
+        first_pref:
+          description: 第一希望都道府県(1-47)。
+          type: integer
+          format: int64
+          example: 1
+        second_pref:
+          description: 第二希望都道府県(1-47)。
+          type: integer
+          format: int64
+          example: 2
+        third_pref:
+          description: 第三希望都道府県(1-47)。
+          type: integer
+          format: int64
+          example: 3
+        hobbies:
+          $ref: '#/components/schemas/Hobbies'
+    PostUserResponse:
+      description: POST /user のレスポンス。ユーザIDを返す。
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 42
+    GetCommentsResponse:
+      description: GET /comments/{prefectureID}のレスポンス。
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              comment:
+                description: コメント本体。
+                type: string
+                example: この県はbest of best。
+              born_pref:
+                description: 出身地(1-47 or 海外も含めて1-48)。
+                type: integer
+                format: int64
+                example: 25
+              job:
+                description: 職種。engineer or designer or business。
+                type: string
+                enum:
+                - engineer
+                - designer
+                - business
+                example: engineer
+    PostCommentRequest:
+      description: POST /comments/{prefectureID}のリクエストボディ。
+      type: object
+      properties:
+        id:
+          description: バックエンドユーザID。
+          type: integer
+          format: int64
+          example: 10
+        comment:
+          description: コメント本体。
+          type: string
+          example: この県こそ至高。異論は認めない。
+    GetHeatmapResponse:
+      description: GET /heatmapのレスポンス。
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            北海道:
+              type: number
+              format: double
+              example: 0.5
+            青森県:
+              type: number
+              format: double
+              example: 1.0
