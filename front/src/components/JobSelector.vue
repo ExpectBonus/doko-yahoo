@@ -101,6 +101,7 @@
 	label {
 		width: 100%;
 		height: 100%;
+		display: block;
 		text-align: center;
 		font-size: 20px;
 		font-weight: bold;
