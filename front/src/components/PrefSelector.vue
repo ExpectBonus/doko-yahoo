@@ -4,7 +4,9 @@
 			<button class="modal-close" @click="$emit('closeModal')">✕</button>
 			<p v-show="!selectedPrefs.length">{{ request }}はどこですか？</p>
 			<div v-show="selectedPrefs.length">
-				<span>{{ selectedPrefs }}</span>
+				<p v-for="(pref, index) in displaySelectedPrefectures" :key="index">
+					{{ pref }}
+				</p>
 			</div>
 		</div>
 		<div
@@ -72,6 +74,18 @@
 						return 0;
 				}
 			},
+			displaySelectedPrefectures() {
+				if (this.request == "出身地") {
+					return this.selectedPrefs;
+				} else if (this.request == "希望の勤務地") {
+					return this.selectedPrefs.reduce((acc, value, index) => {
+						acc.push(`第${index + 1}希望: ${value}`);
+						return acc;
+					}, []);
+				} else {
+					return [];
+				}
+			},
 		},
 		watch: {
 			selecting(newArray, prevArray) {
@@ -81,7 +95,6 @@
 				this.$emit("emitPrefs", newArray);
 			},
 		},
-		methods: {},
 	};
 </script>
 
@@ -105,12 +118,13 @@
 		z-index: 999;
 		top: 0;
 		width: 100%;
-		min-height: 80px;
+		min-height: 100px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		font-size: 1.2rem;
+		font-weight: bold;
 		background-color: #ffffff;
 	}
 	.header.selected {
