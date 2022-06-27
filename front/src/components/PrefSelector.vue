@@ -2,8 +2,8 @@
 	<div id="pref-selector">
 		<div class="header" :class="{ selected: selectedPrefs.length }">
 			<button class="modal-close" @click="$emit('closeModal')">✕</button>
-			<p v-if="!selectedPrefs.length">{{ request }}はどこですか？</p>
-			<div v-else>
+			<p v-show="!selectedPrefs.length">{{ request }}はどこですか？</p>
+			<div v-show="selectedPrefs.length">
 				<span>{{ selectedPrefs }}</span>
 			</div>
 		</div>
@@ -95,13 +95,14 @@
 		flex-direction: column;
 		align-items: center;
 		row-gap: 15px;
-		padding: 10px;
 		overflow: scroll;
 		background-color: #ffffff;
+		padding-bottom: 10px;
 	}
 
 	.header {
 		position: sticky;
+		z-index: 999;
 		top: 0;
 		width: 100%;
 		min-height: 80px;
@@ -110,6 +111,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 1.2rem;
+		background-color: #ffffff;
 	}
 	.header.selected {
 		background-color: #008277;
@@ -122,6 +124,7 @@
 		flex-direction: column;
 		align-items: flex-start;
 		row-gap: 5px;
+		padding: 0 10px;
 	}
 
 	.prefs-container {
