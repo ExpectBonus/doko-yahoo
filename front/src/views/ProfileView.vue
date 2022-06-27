@@ -208,7 +208,7 @@
 					})
 					.then((res) => {
 						console.log(`user id: ${res.data}`);
-						this.$store.commit("setUserInfo", { ...params, id: res.data });
+						this.$store.commit("setUserInfo", { ...params, id: res.data.id });
 						this.$router.push({ name: "map" });
 					})
 					.catch((err) => {
