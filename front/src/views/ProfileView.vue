@@ -218,7 +218,7 @@
 					.catch(function (err) {
 						console.log(err);
 						alert("プロフィールの登録に失敗しました");
-						this.$router.push({ name: home });
+						this.$router.push({ name: "home" });
 					});
 			},
 			checkParams: function () {

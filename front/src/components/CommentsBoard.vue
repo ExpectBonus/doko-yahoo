@@ -64,7 +64,7 @@
 						console.error(error);
 						/**エラー処理 */
 						alert("コメントの投稿に失敗しました");
-						this.$router.push({ name: home });
+						this.$router.push({ name: "home" });
 					});
 				console.log(result);
 			},

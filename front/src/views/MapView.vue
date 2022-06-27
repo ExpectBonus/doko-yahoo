@@ -94,7 +94,7 @@
 					})
 					.catch((error) => {
 						alert("データの取得に失敗しました");
-						this.$router.push({ name: home });
+						this.$router.push({ name: "home" });
 						console.log(error);
 					});
 			},
@@ -109,7 +109,7 @@
 					.catch((error) => {
 						console.error(error);
 						alert("コメントの取得に失敗しました．");
-						this.$router.push({ name: home });
+						this.$router.push({ name: "home" });
 					});
 			},
 			pushPostComment(comment) {
