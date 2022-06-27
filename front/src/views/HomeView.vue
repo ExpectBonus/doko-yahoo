@@ -11,22 +11,26 @@
 </template>
 
 <script>
+	import { loadScript } from "vue-plugin-load-script";
 	export default {
 		name: "HomeView",
 		mounted() {
-			google.accounts.id.initialize({
-				client_id: process.env.VUE_APP_GOAUTH_CLIENT_ID,
-				callback: this.handleCredentialResponse,
+			loadScript("https://accounts.google.com/gsi/client").then(() => {
+				google.accounts.id.initialize({
+					client_id: process.env.VUE_APP_GOAUTH_CLIENT_ID,
+					callback: this.handleCredentialResponse,
+				});
+				google.accounts.id.renderButton(
+					// customization attributes
+					document.getElementById("google-login"),
+					{
+						theme: "outline",
+						shape: "pill",
+						size: "large",
+					}
+				);
+				//google.accounts.id.prompt(); // also display the One Tap dialog
 			});
-			google.accounts.id.renderButton(
-				document.getElementById("google-login"),
-				{
-					theme: "outline",
-					shape: "pill",
-					size: "large",
-				} // customization attributes
-			);
-			//google.accounts.id.prompt(); // also display the One Tap dialog
 		},
 		methods: {
 			handleCredentialResponse(response) {
