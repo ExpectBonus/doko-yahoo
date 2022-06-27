@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import TopView from "../views/TopView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import MapView from "../views/MapView.vue";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -14,11 +14,6 @@ const routes = [
 		component: HomeView,
 	},
 	{
-		path: "/top",
-		name: "top",
-		component: TopView,
-	},
-	{
 		path: "/profile",
 		name: "profile",
 		component: ProfileView,
@@ -27,6 +22,12 @@ const routes = [
 		path: "/map",
 		name: "map",
 		component: MapView,
+		beforeEnter: (to, from, next) => {
+			if (!store.state.userInfo) {
+				store.dispatch("getUserInfo", $store.state.userIdToken);
+			}
+			store.state.userInfo ? next() : next({ name: home });
+		},
 	},
 ];
 
@@ -36,16 +37,13 @@ const router = new VueRouter({
 	routes,
 });
 
-router.beforeEach((to, from, next) => {
-	// TODO: ログイン認証
-	/* if(!isAuth){
+router.beforeEach(async (to, from, next) => {
+	if (to.name !== "home" && !store.state.userIdToken) {
 		// 認証前のユーザは問答無用でトップに飛ばす
-		next({ name: 'top'})
-	}else{
+		next({ name: "home" });
+	} else {
 		next();
-	} */
-
-	next();
+	}
 });
 
 export default router;

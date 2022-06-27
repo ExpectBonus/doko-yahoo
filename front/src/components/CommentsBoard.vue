@@ -20,6 +20,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 	import axios from "axios";
 	import PrefComment from "@/components/PrefComment.vue";
 	import CommentForm from "@/interfaces/CommentForm.vue";
@@ -42,11 +43,14 @@
 				default: () => [],
 			},
 		},
+		computed: {
+			...mapState(["userInfo"]),
+		},
 		methods: {
 			async postComment(comment) {
 				const result = await axios
 					.post(`/api/comments/${this.prefecture.prefCode}`, {
-						id: 1, //TODO: this.userId,
+						id: this.userInfo.id,
 						comment: comment,
 					})
 					.then((response) => {
@@ -59,6 +63,8 @@
 					.catch((error) => {
 						console.error(error);
 						/**エラー処理 */
+						alert("コメントの投稿に失敗しました");
+						this.$router.push({ name: "home" });
 					});
 				console.log(result);
 			},

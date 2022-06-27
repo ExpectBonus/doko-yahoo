@@ -4,6 +4,11 @@ Vue.js でフロントを構築する．
 
 ## How to use
 
+### set .env
+
+.env ファイルに環境変数を設定する．書き方は .env.sample を参照．
+今回は Google OAuth のクライアント ID を設定する(ついでにシークレットも書いてるが不要)
+
 ### start developing
 
 ```
@@ -20,6 +25,7 @@ docker-compose run --rm front sh
 ```
 
 # Resources
+
 - 地図データ: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/)
 
 - 日本地図のアイコン https://icooon-mono.com/10163-%E6%97%A5%E6%9C%AC%E5%9C%B0%E5%9B%B3%E3%81%AE%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3/

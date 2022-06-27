@@ -6,15 +6,35 @@
 			<p><span>どこでヤフー社員が</span><span>働いているかな</span></p>
 			<p><span>自分もどこで</span><span>働こうかな</span></p>
 		</div>
-		<button class="login" @click="login">Googleアカウントで始める</button>
+		<div id="google-login"></div>
 	</div>
 </template>
 
 <script>
+	import { loadScript } from "vue-plugin-load-script";
 	export default {
 		name: "HomeView",
+		mounted() {
+			loadScript("https://accounts.google.com/gsi/client").then(() => {
+				google.accounts.id.initialize({
+					client_id: process.env.VUE_APP_GOAUTH_CLIENT_ID,
+					callback: this.handleCredentialResponse,
+				});
+				google.accounts.id.renderButton(
+					// customization attributes
+					document.getElementById("google-login"),
+					{
+						theme: "outline",
+						shape: "pill",
+						size: "large",
+					}
+				);
+				//google.accounts.id.prompt(); // also display the One Tap dialog
+			});
+		},
 		methods: {
-			login() {
+			handleCredentialResponse(response) {
+				this.$store.commit("setUserIdToken", response);
 				this.$router.push({ name: "profile" });
 			},
 		},
@@ -50,18 +70,5 @@
 	}
 	span {
 		display: inline-block;
-	}
-	.login {
-		width: 90%;
-		padding: 10px 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 1.2rem;
-		font-weight: bold;
-		color: #ffffff;
-		background-color: #008277;
-		border-radius: 10px;
-		box-shadow: inset -3px -3px 4px rgba(0, 0, 0, 0.25);
 	}
 </style>
