@@ -14,3 +14,16 @@ docker ps -a
 ```
 docker logs CONTAINER_ID
 ```
+
+## OAuth2認証に関する情報
+doko-yahoo/back/.env ファイル
+に秘密情報(現在はGOOGLE_CLIENT_IDのみ)を記載するとFlaskが環境変数として読み込んでくれる
+
+```
+GOOGLE_CLIENT_ID="<<OAuth2認証用のグーグルクライアントID>>"
+```
+
+.gitignoreによってGitの追跡を防いでいるので、別個に共有する必要がある
+
+### これをやる理由
+publicリポジトリに秘密情報を置きたくないため

@@ -1,3 +1,5 @@
+import os
+
 from flask import request, jsonify
 from flask.blueprints import Blueprint
 from models.models import *
@@ -7,7 +9,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 # OAuth2認証のクライアントID
-CLIENT_ID = "some_client_id"
+CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 # userカテゴリのエンドポイント定義
 user_blueprint = Blueprint('user', __name__, url_prefix="/api/user")
