@@ -99,11 +99,7 @@
 				</div>
 			</div>
 			<div class="send-button-field">
-				<a href="#">
-					<button class="send-button" @click="sendUserInfo">
-						利用を始める
-					</button>
-				</a>
+				<button class="send-button" @click="sendUserInfo">利用を始める</button>
 			</div>
 		</div>
 	</div>
