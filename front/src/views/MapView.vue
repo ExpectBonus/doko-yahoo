@@ -36,6 +36,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 	import axios from "axios";
 	import jobSelector from "@/components/JobSelector";
 	import hobbiesSelector from "@/components/HobbiesSelector";
@@ -58,6 +59,9 @@
 				heatMapData: {},
 				prefectureComments: [],
 			};
+		},
+		computed: {
+			...mapState(["userInfo"]),
 		},
 		mounted() {
 			this.getHeatMapData();
@@ -90,6 +94,7 @@
 					})
 					.catch((error) => {
 						alert("データの取得に失敗しました");
+						this.$router.push({ name: home });
 						console.log(error);
 					});
 			},
@@ -103,13 +108,15 @@
 					})
 					.catch((error) => {
 						console.error(error);
+						alert("コメントの取得に失敗しました．");
+						this.$router.push({ name: home });
 					});
 			},
 			pushPostComment(comment) {
 				this.prefectureComments.push({
-					born_pref: 1, //TODO: this.user.born_pref
+					born_pref: this.userInfo.born_pref,
 					comment: comment,
-					job: "engineer", //TODO: this.user.job
+					job: this.userInfo.job,
 				});
 			},
 		},
