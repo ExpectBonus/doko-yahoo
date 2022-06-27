@@ -49,7 +49,11 @@
 					<span class="title">今、どこに住んでいる？</span>
 				</div>
 				<div class="input-form from-pref">
-					<button class="modal-button" :class="{ selected: selectedBornPref }">
+					<button
+						@click="isSelectingPref = 'bornPref'"
+						class="modal-button"
+						:class="{ selected: selectedBornPref }"
+					>
 						{{ selectedBornPref || "都道府県を選ぶ" }}
 					</button>
 				</div>
@@ -63,12 +67,21 @@
 
 				<div class="input-form to-pref">
 					<button
+						@click="isSelectingPref = 'workPref'"
 						class="modal-button"
 						:class="{ selected: selectedWorkPrefs.length }"
 					>
 						{{ selectedWorkPrefsToStr || "都道府県を選ぶ" }}
 					</button>
 				</div>
+			</div>
+
+			<div
+				class="modal"
+				v-show="isSelectingPref"
+				@click.self="isSelectingPref = null"
+			>
+				<PrefSelector :request="isSelectingPref" />
 			</div>
 
 			<div class="form-wrapper">
@@ -93,15 +106,17 @@
 <script>
 	import { prefectures as prefs } from "../assets/prefectures.js";
 	import { regionPrefs } from "../assets/prefectures.js";
-	import jobSelector from "@/components/JobSelector.vue";
-	import hobbiesSelector from "@/components/HobbiesSelector.vue";
+	import JobSelector from "@/components/JobSelector.vue";
+	import PrefSelector from "@/components/PrefSelector.vue";
+	import HobbiesSelector from "@/components/HobbiesSelector.vue";
 	import axios from "axios";
 
 	export default {
 		name: "ProfileView",
 		components: {
-			JobSelector: jobSelector,
-			HobbiesSelector: hobbiesSelector,
+			JobSelector,
+			PrefSelector,
+			HobbiesSelector,
 		},
 		data: function () {
 			return {
@@ -115,6 +130,8 @@
 				selectedWorkPrefs: [],
 				selectedHobbies: [],
 				// button
+				isSelectingPref: null,
+				onModal: false,
 				isClicked: false,
 				// error flag
 				errorMsg: [],
@@ -345,6 +362,21 @@
 		color: #ffffff;
 		background-color: #008277;
 		transition: 0.6s;
+	}
+
+	.modal {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 99;
+		width: 100%;
+		height: 100vh;
+		height: 100dvh; /* for iOS */
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 30px;
+		background-color: rgba(60, 60, 60, 0.4);
 	}
 
 	.send-button {
