@@ -8,6 +8,11 @@ from controllers.heatmap_controller import heatmap_blueprint
 
 import models
 
+from dotenv import load_dotenv
+
+# .envファイルの読み込み
+load_dotenv(override=True)
+
 app = Flask(__name__)
 
 # アプリ設定の読み込み

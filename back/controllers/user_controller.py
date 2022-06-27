@@ -1,7 +1,15 @@
+import os
+
 from flask import request, jsonify
 from flask.blueprints import Blueprint
 from models.models import *
 from db import db
+
+from google.oauth2 import id_token
+from google.auth.transport import requests
+
+# OAuth2認証のクライアントID
+CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 # userカテゴリのエンドポイント定義
 user_blueprint = Blueprint('user', __name__, url_prefix="/api/user")
@@ -9,10 +17,20 @@ user_blueprint = Blueprint('user', __name__, url_prefix="/api/user")
 # POST /user/
 @user_blueprint.route('/', methods=['POST'])
 def post_user_handler():
-    user = User.query.filter(User.provider_id==request.json["provider_id"]).first()
+    token = request.json["token"]
+    provider_id = ""
+    try:
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+        provider_id = idinfo["sub"]
+    except ValueError:
+        return "Invalid ID token", 400
+
+
+
+    user = User.query.filter(User.provider_id==provider_id).first()
     if user == None:
         # ユーザの新規作成
-        new_user = User(provider_id=request.json["provider_id"],
+        new_user = User(provider_id=provider_id,
                     username=request.json["username"],
                     job=request.json["job"],
                     born_pref=request.json["born_pref"],
@@ -22,7 +40,7 @@ def post_user_handler():
         db.session.add(new_user)
         db.session.commit()
 
-        user = User.query.filter(User.provider_id==request.json["provider_id"]).first()
+        user = User.query.filter(User.provider_id==provider_id).first()
 
         for h in request.json["hobbies"]:
             # 新しい趣味があればhobbiesに追加
@@ -86,11 +104,19 @@ def post_user_handler():
             "id": user.id
         }), 201
 
-# GET /user/{provider_id} と DELETE /user/{user_id}
+# GET /user/{token} と DELETE /user/{user_id}
 @user_blueprint.route('/<string:id>', methods=['GET','DELETE'])
 def get_delete_user_handler(id):
     if request.method == "GET":
-        provider_id = id
+        token = id
+
+        provider_id = ""
+        try:
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+            provider_id = idinfo["sub"]
+        except ValueError:
+            return "Invalid ID token", 400
+
         user = User.query.filter(User.provider_id==provider_id).first()
         if user == None:
             return "user does not exist", 404
