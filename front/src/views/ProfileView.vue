@@ -49,15 +49,9 @@
 					<span class="title">今、どこに住んでいる？</span>
 				</div>
 				<div class="input-form from-pref">
-					<a
-						href="#select-born-pref"
-						class="modal-button"
-						:class="{ selected: selectedBornPref }"
-					>
-						<div class="show-selected-pref">
-							{{ selectedBornPref || "都道府県を選ぶ" }}
-						</div>
-					</a>
+					<button class="modal-button" :class="{ selected: selectedBornPref }">
+						{{ selectedBornPref || "都道府県を選ぶ" }}
+					</button>
 				</div>
 			</div>
 
@@ -68,15 +62,12 @@
 				</div>
 
 				<div class="input-form to-pref">
-					<a
-						href="#select-three-pref"
+					<button
 						class="modal-button"
 						:class="{ selected: selectedWorkPrefs.length }"
 					>
-						<div class="show-selected-pref">
-							{{ selectedWorkPrefsToStr || "都道府県を選ぶ" }}
-						</div>
-					</a>
+						{{ selectedWorkPrefsToStr || "都道府県を選ぶ" }}
+					</button>
 				</div>
 			</div>
 
@@ -328,12 +319,13 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		font-size: 1.2rem;
 		color: #808080;
 		background-color: #eeeeee;
+		border: 0px solid transparent;
 		border-radius: 10px;
 		cursor: pointer;
 		padding: 10px 20px;
-		text-decoration: none;
 	}
 
 	.modal-button.selected {
@@ -353,48 +345,6 @@
 		color: #ffffff;
 		background-color: #008277;
 		transition: 0.6s;
-	}
-
-	.modal-button a {
-		background: #eee;
-		border-radius: 3px;
-		justify-content: space-around;
-		align-items: center;
-		margin: 0 auto;
-		max-width: 280px;
-		padding: 10px 25px;
-		color: #313131;
-		transition: 0.3s ease-in-out;
-		font-weight: 500;
-	}
-
-	.modal-button a:hover {
-		background: #313131;
-		color: #fff;
-	}
-
-	.modal-button a:after {
-		content: "";
-		width: 5px;
-		height: 5px;
-		border-top: 3px solid #313131;
-		border-right: 3px solid #313131;
-		transform: rotate(45deg) translateY(-50%);
-		position: absolute;
-		top: 50%;
-		right: 20px;
-		border-radius: 1px;
-		transition: 0.3s ease-in-out;
-	}
-
-	.modal-button a:hover:after {
-		border-color: #fff;
-	}
-
-	.show-selected-pref {
-		font-size: 20px;
-		display: flex;
-		justify-content: space-between !important;
 	}
 
 	.send-button {
