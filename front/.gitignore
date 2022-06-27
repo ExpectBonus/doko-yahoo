@@ -1,9 +1,10 @@
 .DS_Store
 node_modules
 /dist
-client_secret_387032555895-5oitnqo8ub1fm1f3sj8ehcf08poehu0r.apps.googleusercontent.com.json
+googleusercontent.com.json
 
 # local env files
+.env
 .env.local
 .env.*.local
 
