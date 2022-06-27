@@ -2,7 +2,7 @@
 	<div id="pref-selector">
 		<div class="header" :class="{ selected: selectedPrefs.length }">
 			<button class="modal-close" @click="$emit('closeModal')">✕</button>
-			<p v-if="!selectedPrefs.length">都道府県を選択してください</p>
+			<p v-if="!selectedPrefs.length">{{ request }}はどこですか？</p>
 			<div v-else>
 				<span>{{ selectedPrefs }}</span>
 			</div>
@@ -22,11 +22,11 @@
 					:value="pref"
 				>
 					<input
-						type="radio"
+						type="checkbox"
 						:id="pref"
 						name="born"
 						:value="pref"
-						v-model="born_pref"
+						v-model="selectedPrefs"
 					/>
 					<label :for="pref">
 						<span>{{ pref }}</span>
@@ -38,13 +38,17 @@
 </template>
 
 <script>
-	import { regionPrefs } from "../assets/prefectures.js";
+	import { regionPrefs } from "@/assets/prefectures.js";
 	export default {
 		name: "PrefSelector",
 		props: {
 			request: {
 				type: String,
-				default: "bornPref", // bornPref || workPref
+				default: "出身地", // 出身地 || 希望の勤務地
+			},
+			selecting: {
+				type: Array,
+				default: () => [],
 			},
 		},
 		data() {
@@ -52,6 +56,26 @@
 				regionPrefs,
 				selectedPrefs: [],
 			};
+		},
+		computed: {
+			limitSelectablePrefecturesCount() {
+				switch (this.request) {
+					case "出身地":
+						return 1;
+					case "希望の勤務地":
+						return 3;
+					default:
+						return 0;
+				}
+			},
+		},
+		watch: {
+			selecting(newArray, prevArray) {
+				this.selectedPrefs = newArray;
+			},
+			selectedPrefs(newArray, prevArray) {
+				this.$emit("emitPrefs", newArray);
+			},
 		},
 		methods: {},
 	};
@@ -110,7 +134,7 @@
 		position: relative;
 		transition: all 0.3s;
 	}
-	input[type="radio"] {
+	input[type="checkbox"] {
 		opacity: 0;
 		position: absolute;
 		top: 0;

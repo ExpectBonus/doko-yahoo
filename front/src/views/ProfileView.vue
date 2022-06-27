@@ -50,7 +50,7 @@
 				</div>
 				<div class="input-form from-pref">
 					<button
-						@click="isSelectingPref = 'bornPref'"
+						@click="requestingType = '出身地'"
 						class="modal-button"
 						:class="{ selected: selectedBornPref }"
 					>
@@ -67,7 +67,7 @@
 
 				<div class="input-form to-pref">
 					<button
-						@click="isSelectingPref = 'workPref'"
+						@click="requestingType = '希望の勤務地'"
 						class="modal-button"
 						:class="{ selected: selectedWorkPrefs.length }"
 					>
@@ -78,12 +78,14 @@
 
 			<div
 				class="modal"
-				v-show="isSelectingPref"
-				@click.self="isSelectingPref = null"
+				v-show="requestingType"
+				@click.self="requestingType = null"
 			>
 				<PrefSelector
-					:request="isSelectingPref"
-					@closeModal="isSelectingPref = null"
+					:request="requestingType"
+					:selecting="propsSelectedPrefectures"
+					@emitPrefs="setPrefs"
+					@closeModal="requestingType = null"
 				/>
 			</div>
 
@@ -133,7 +135,7 @@
 				selectedWorkPrefs: [],
 				selectedHobbies: [],
 				// button
-				isSelectingPref: null,
+				requestingType: null,
 				onModal: false,
 				isClicked: false,
 				// error flag
@@ -152,7 +154,7 @@
 				}, "");
 				return str.slice(0, -2); //末尾のカンマとスペースを削除
 			},
-			getPrefIndex: function () {
+			getPrefIndex() {
 				return function (pref) {
 					if (pref == null) {
 						return null;
@@ -160,8 +162,24 @@
 					return this.prefs.indexOf(pref);
 				};
 			},
+			propsSelectedPrefectures() {
+				if (this.requestingType == "出身地") {
+					return this.selectedBornPref ? [this.selectedBornPref] : [];
+				} else if (this.requestingType == "希望の勤務地") {
+					return this.selectedWorkPrefs;
+				} else {
+					return [];
+				}
+			},
 		},
 		methods: {
+			setPrefs(array) {
+				if (this.requestingType == "出身地") {
+					this.selectedBornPref = array[0];
+				} else if (this.requestingType == "希望の勤務地") {
+					this.selectedWorkPrefs = array;
+				}
+			},
 			sendUserInfo: async function () {
 				let err_f;
 
