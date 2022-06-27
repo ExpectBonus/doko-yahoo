@@ -49,58 +49,13 @@
 					<span class="title">今、どこに住んでいる？</span>
 				</div>
 				<div class="input-form from-pref">
-					<a
-						href="#select-born-pref"
+					<button
+						@click="requestingType = '出身地'"
 						class="modal-button"
-						:class="{ selected: born_pref }"
+						:class="{ selected: selectedBornPref }"
 					>
-						<div class="show-selected-pref">
-							{{ born_pref || "都道府県を選ぶ" }}
-						</div>
-					</a>
-				</div>
-				<div class="modal-wrapper" id="select-born-pref">
-					<a href="#!" class="modal-overlay"></a>
-					<div class="modal-window">
-						<div class="modal-content">
-							<p class="modal-title">1つ選んでください</p>
-							<span v-if="born_pref" class="selected-born">
-								{{ born_pref }}
-							</span>
-							<div
-								class="section-container"
-								v-for="(value, key) in regionPrefs"
-								:key="key"
-								:value="value"
-							>
-								<div class="label-section">
-									<span class="label-born-field">{{ value.section }}</span>
-									<div class="prefs-container">
-										<span
-											v-for="(pref, key) in value.prefs"
-											:key="key"
-											:value="pref"
-										>
-											<input
-												type="radio"
-												class="input-born-field"
-												:id="pref"
-												name="born"
-												:value="pref"
-												v-model="born_pref"
-											/>
-											<label :for="pref" class="label-born"
-												><span class="pref-field">{{ pref }}</span></label
-											>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<a href="#!" class="modal-close"
-							>✖️<i class="far fa-times-circle"></i
-						></a>
-					</div>
+						{{ selectedBornPref || "都道府県を選ぶ" }}
+					</button>
 				</div>
 			</div>
 
@@ -111,68 +66,27 @@
 				</div>
 
 				<div class="input-form to-pref">
-					<a
-						href="#select-three-pref"
+					<button
+						@click="requestingType = '希望の勤務地'"
 						class="modal-button"
-						:class="{ selected: selectedPrefs.length }"
+						:class="{ selected: selectedWorkPrefs.length }"
 					>
-						<div class="show-selected-pref">
-							{{ selectedPrefsToStr || "都道府県を選ぶ" }}
-						</div>
-					</a>
+						{{ selectedWorkPrefsToStr || "都道府県を選ぶ" }}
+					</button>
 				</div>
-				<div class="modal-wrapper" id="select-three-pref">
-					<a href="#!" class="modal-overlay"></a>
-					<div class="modal-window">
-						<div class="modal-content">
-							<p class="modal-title">最大3つまで選んでください</p>
-							<div v-if="selectedPrefs.length" class="show-prefs-container">
-								<div v-for="(pref, index) in selectedPrefs" :key="index">
-									<span class="selected-born"
-										>第{{ index + 1 }}希望：{{ pref }}</span
-									>
-								</div>
-							</div>
-							<div
-								class="section-container"
-								v-for="(regionPref, sectionIndex) in regionPrefs"
-								:key="sectionIndex"
-							>
-								<div class="label-section">
-									<span class="label-born-field">{{ regionPref.section }}</span>
-									<div class="prefs-container">
-										<span
-											v-for="(pref, prefIndex) in regionPref.prefs"
-											:key="prefIndex"
-										>
-											<!-- <input type="checkbox" class="input-born-field" :id="getPrefIndex(pref)"
-										name="three" :value="pref" v-model="selectedPrefs" @click="clickPref"
-										v-bind:disabled="isSelected"> -->
-											<input
-												type="checkbox"
-												class="input-born-field"
-												:id="getPrefIndex(pref)"
-												name="three"
-												:value="pref"
-												v-model="selectedPrefs"
-												:disabled="
-													selectedPrefs.length >= 3 &&
-													selectedPrefs.indexOf(pref) == -1
-												"
-											/>
-											<label :for="getPrefIndex(pref)" class="label-born">
-												<span class="pref-field">{{ pref }}</span>
-											</label>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<a href="#!" class="modal-close"
-							>✖️<i class="far fa-times-circle"></i
-						></a>
-					</div>
-				</div>
+			</div>
+
+			<div
+				class="modal"
+				v-show="requestingType"
+				@click.self="requestingType = null"
+			>
+				<PrefSelector
+					:request="requestingType"
+					:selecting="propsSelectedPrefectures"
+					@emitPrefs="setPrefs"
+					@closeModal="requestingType = null"
+				/>
 			</div>
 
 			<div class="form-wrapper">
@@ -195,31 +109,35 @@
 	</div>
 </template>
 <script>
+	import { mapState } from "vuex";
 	import { prefectures as prefs } from "../assets/prefectures.js";
 	import { regionPrefs } from "../assets/prefectures.js";
-	import jobSelector from "@/components/JobSelector.vue";
-	import hobbiesSelector from "@/components/HobbiesSelector.vue";
+	import JobSelector from "@/components/JobSelector.vue";
+	import PrefSelector from "@/components/PrefSelector.vue";
+	import HobbiesSelector from "@/components/HobbiesSelector.vue";
 	import axios from "axios";
 
 	export default {
 		name: "ProfileView",
 		components: {
-			JobSelector: jobSelector,
-			HobbiesSelector: hobbiesSelector,
+			JobSelector,
+			PrefSelector,
+			HobbiesSelector,
 		},
 		data: function () {
 			return {
 				// import prefs
 				regionPrefs,
+				prefs,
 				// input
 				username: "",
 				selectedJob: "",
-				prefs,
-				born_pref: "",
-				selectedPrefs: [],
+				selectedBornPref: "",
+				selectedWorkPrefs: [],
 				selectedHobbies: [],
-				params: {},
 				// button
+				requestingType: null,
+				onModal: false,
 				isClicked: false,
 				// error flag
 				errorMsg: [],
@@ -230,14 +148,15 @@
 			};
 		},
 		computed: {
-			selectedPrefsToStr() {
-				if (!this.selectedPrefs) return ""; //都道府県が選ばれていない場合は即空白リターン
-				let str = this.selectedPrefs.reduce((prefs, pref) => {
+			...mapState(["userIdToken", "userInfo"]),
+			selectedWorkPrefsToStr() {
+				if (!this.selectedWorkPrefs) return ""; //都道府県が選ばれていない場合は即空白リターン
+				let str = this.selectedWorkPrefs.reduce((prefs, pref) => {
 					return prefs + `${pref}, `; //文字列として並べていく
 				}, "");
 				return str.slice(0, -2); //末尾のカンマとスペースを削除
 			},
-			getPrefIndex: function () {
+			getPrefIndex() {
 				return function (pref) {
 					if (pref == null) {
 						return null;
@@ -245,8 +164,24 @@
 					return this.prefs.indexOf(pref);
 				};
 			},
+			propsSelectedPrefectures() {
+				if (this.requestingType == "出身地") {
+					return this.selectedBornPref ? [this.selectedBornPref] : [];
+				} else if (this.requestingType == "希望の勤務地") {
+					return this.selectedWorkPrefs;
+				} else {
+					return [];
+				}
+			},
 		},
 		methods: {
+			setPrefs(array) {
+				if (this.requestingType == "出身地") {
+					this.selectedBornPref = array[0];
+				} else if (this.requestingType == "希望の勤務地") {
+					this.selectedWorkPrefs = array;
+				}
+			},
 			sendUserInfo: async function () {
 				let err_f;
 
@@ -261,23 +196,29 @@
 					this.setErrorMsg();
 					return;
 				}
+				let params = {
+					username: this.username,
+					job: this.selectedJob,
+					born_pref: this.getPrefIndex(this.selectedBornPref),
+					first_pref: this.getPrefIndex(this.selectedWorkPrefs[0]),
+					second_pref: this.getPrefIndex(this.selectedWorkPrefs[1]),
+					third_pref: this.getPrefIndex(this.selectedWorkPrefs[2]),
+					hobbies: this.selectedHobbies,
+				};
 				await axios
-					.post("/api/user", {
-						provider_id: 1,
-						username: this.username,
-						job: this.selectedJob,
-						born_pref: this.getPrefIndex(this.born_pref),
-						first_pref: this.getPrefIndex(this.selectedPrefs[0]),
-						second_pref: this.getPrefIndex(this.selectedPrefs[1]),
-						third_pref: this.getPrefIndex(this.selectedPrefs[2]),
-						hobbies: this.selectedHobbies,
+					.post("/api/user/", {
+						...params,
+						token: this.userIdToken,
 					})
 					.then(function (res) {
 						console.log(`user id: ${res.data}`);
+						this.$store.commit("setUserInfo", { ...params, id: res.data.id });
 						this.$router.push({ name: "map" });
 					})
 					.catch(function (err) {
 						console.log(err);
+						alert("プロフィールの登録に失敗しました");
+						this.$router.push({ name: "home" });
 					});
 			},
 			checkParams: function () {
@@ -291,11 +232,11 @@
 					this.selectJob_f = true;
 					err_f = true;
 				}
-				if (!this.born_pref) {
+				if (!this.selectedBornPref) {
 					this.selectBorn_f = true;
 					err_f = true;
 				}
-				if (!this.selectedPrefs.length) {
+				if (!this.selectedWorkPrefs.length) {
 					this.selectFirst_f = true;
 					err_f = true;
 				}
@@ -424,12 +365,13 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		font-size: 1.2rem;
 		color: #808080;
 		background-color: #eeeeee;
+		border: 0px solid transparent;
 		border-radius: 10px;
 		cursor: pointer;
 		padding: 10px 20px;
-		text-decoration: none;
 	}
 
 	.modal-button.selected {
@@ -451,241 +393,19 @@
 		transition: 0.6s;
 	}
 
-	/* dialog */
-	.label-section {
-		font-family: "Hiragino Kaku Gothic ProN";
-		font-style: normal;
-		font-weight: 400;
-		font-size: 30px;
-		/* line-height: 27px; */
-		letter-spacing: 0.01em;
-		text-align: left;
-		margin: 20px;
-	}
-
-	.section-container {
-		min-width: 150px;
-	}
-
-	.input-born-field {
-		/* border: 1px solid #1b2538; */
-		clip: rect(1px, 1px, 1px, 1px);
-		position: absolute !important;
-		margin: 20px;
-	}
-
-	.prefs-container {
-		/* この要素はflexコンテナとなり、子要素は自動的にflexアイテムとなる */
-		display: flex;
-
-		/* 横並びに表示する */
-		flex-direction: row;
-
-		/* 画面幅に収まらない場合は折り返す */
-		flex-wrap: wrap;
-	}
-
-	.pref-field {
-		font-size: 20px;
-		text-align: center;
-		vertical-align: middle;
-		padding: 20px;
-	}
-
-	.label-born {
-		margin: 6px;
-		padding: 5px;
-		border-radius: 7px;
-		border: 2px solid grey;
-		background-color: #d9d9d9;
-		transition: all 0.3s;
-	}
-
-	.selected-born {
-		font-size: 20px;
-		background-color: #008277;
-		color: white;
-		/* padding: 10px 50px 15px 50px; */
-		padding: 10px 60px 15px 60px;
-		border-radius: 7px;
-	}
-
-	.show-prefs-container {
-		height: 110px;
-		padding: 10px;
-		width: 350px;
-		margin: 0% auto;
-		background-color: #008277;
-		border-radius: 20px;
-	}
-
-	.input-born-field:checked + .label-born {
-		background: #008277;
-		color: white;
-		border-radius: 10px;
-		text-shadow: 0 0 1px rgba(0, 0, 0, 0.7);
-	}
-
-	.input-born-field:focus + .label-born {
-		/* outline-color: #4D90FE; */
-		outline-offset: 0px;
-		outline-style: auto;
-		outline-width: 5px;
-	}
-
-	.modal-button a {
-		background: #eee;
-		border-radius: 3px;
-		justify-content: space-around;
-		align-items: center;
-		margin: 0 auto;
-		max-width: 280px;
-		padding: 10px 25px;
-		color: #313131;
-		transition: 0.3s ease-in-out;
-		font-weight: 500;
-	}
-
-	.modal-button a:hover {
-		background: #313131;
-		color: #fff;
-	}
-
-	.modal-button a:after {
-		content: "";
-		width: 5px;
-		height: 5px;
-		border-top: 3px solid #313131;
-		border-right: 3px solid #313131;
-		transform: rotate(45deg) translateY(-50%);
-		position: absolute;
-		top: 50%;
-		right: 20px;
-		border-radius: 1px;
-		transition: 0.3s ease-in-out;
-	}
-
-	.modal-button a:hover:after {
-		border-color: #fff;
-	}
-
-	.modal-wrapper {
-		z-index: 999;
+	.modal {
 		position: fixed;
 		top: 0;
-		right: 0;
-		bottom: 0;
 		left: 0;
-		padding: 40px 10px;
-		text-align: center;
-	}
-
-	.modal-wrapper:not(:target) {
-		opacity: 0;
-		visibility: hidden;
-		transition: opacity 0.3s, visibility 0.3s;
-	}
-
-	.modal-wrapper:target {
-		opacity: 1;
-		visibility: visible;
-		transition: opacity 0.4s, visibility 0.4s;
-	}
-
-	.modal-wrapper::after {
-		display: inline-block;
-		height: 100%;
-		margin-left: -0.05em;
-		vertical-align: middle;
-		content: "";
-	}
-
-	.modal-wrapper .modal-window {
-		box-sizing: border-box;
-		display: inline-block;
-		z-index: 20;
-		position: relative;
-		max-width: 700px;
-		padding: 10px 30px 25px;
-		border-radius: 2px;
-		background: #fff;
-		box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-		vertical-align: middle;
-	}
-
-	.modal-wrapper .modal-window .modal-content {
-		max-height: 80vh;
-		overflow-y: auto;
-		/* text-align: left */
-	}
-
-	.modal-title {
-		position: relative;
-		font-size: 25px;
-		padding: 20px;
-		height: 70px;
-		background: #e6f4ff;
-		color: #5c98d4;
-		font-weight: bold;
-		vertical-align: middle;
-	}
-
-	.modal-title:after {
-		position: absolute;
-		content: "";
-		top: 100%;
-		border: 15px solid transparent;
-		border-top: 15px solid #e6f4ff;
-		width: 0;
-		height: 0;
-	}
-
-	.modal-title p {
-		margin: 0;
-		padding: 0;
-	}
-
-	/* .modal-content p {
-		margin: 10px 0 0 0;
-	} */
-
-	.modal-overlay {
-		z-index: 10;
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		background: rgba(0, 0, 0, 0.8);
-	}
-
-	.modal-wrapper .modal-close {
-		z-index: 20;
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		width: 35px;
-		color: #95979c !important;
-		font-size: 30px;
-		font-weight: 700;
-		line-height: 35px;
-		text-align: center;
-		text-decoration: none;
-		text-indent: 0;
-	}
-
-	.modal-wrapper .modal-close:hover {
-		color: #2b2e38 !important;
-	}
-
-	.show-selected-pref {
-		font-size: 20px;
+		z-index: 99;
+		width: 100%;
+		height: 100vh;
+		height: 100dvh; /* for iOS */
 		display: flex;
-		justify-content: space-between !important;
-	}
-
-	.three-pref {
-		margin-right: 5px;
+		align-items: center;
+		justify-content: center;
+		padding: 30px;
+		background-color: rgba(60, 60, 60, 0.4);
 	}
 
 	.send-button {
