@@ -1,6 +1,7 @@
 <template>
 	<div id="pref-selector">
 		<div class="header" :class="{ selected: selectedPrefs.length }">
+			<button class="modal-close" @click="$emit('closeModal')">✕</button>
 			<p v-if="!selectedPrefs.length">都道府県を選択してください</p>
 			<div v-else>
 				<span>{{ selectedPrefs }}</span>
@@ -52,6 +53,7 @@
 				selectedPrefs: [],
 			};
 		},
+		methods: {},
 	};
 </script>
 
@@ -140,17 +142,16 @@
 	}
 
 	.modal-close {
-		z-index: 20;
 		position: absolute;
-		top: 5px;
-		right: 5px;
+		z-index: 999;
+		top: 10px;
+		right: 10px;
 		width: 35px;
-		color: #95979c !important;
-		font-size: 30px;
-		font-weight: 700;
-		line-height: 35px;
-		text-align: center;
-		text-decoration: none;
-		text-indent: 0;
+		color: #95979c;
+		font-size: 1.5rem;
+		font-weight: bold;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
 	}
 </style>

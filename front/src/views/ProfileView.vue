@@ -81,7 +81,10 @@
 				v-show="isSelectingPref"
 				@click.self="isSelectingPref = null"
 			>
-				<PrefSelector :request="isSelectingPref" />
+				<PrefSelector
+					:request="isSelectingPref"
+					@closeModal="isSelectingPref = null"
+				/>
 			</div>
 
 			<div class="form-wrapper">
