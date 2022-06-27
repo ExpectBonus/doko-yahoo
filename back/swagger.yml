@@ -93,9 +93,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostUserResponse'
         '400':
-          description: Invalid information
-        '500':
-          description: Internal server error
+          description: Invalid ID token
   /user/{userID}:
     delete:
       tags:
