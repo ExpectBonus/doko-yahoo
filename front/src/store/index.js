@@ -1,24 +1,36 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	plugins: [
-		createPersistedState({
-			key: "vue-gauth",
-			paths: ["userInfo"],
-			storage: window.sessionStorage,
-		}),
-	],
 	state: {
+		userIdToken: "",
 		userInfo: {},
 	},
 	mutations: {
-		setUserInfo(state, userInfo) {
-			state.userInfo = userInfo;
+		setUserIdToken(state, googleInfo) {
+			state.userIdToken = googleInfo.credential;
+		},
+		setUserInfo(state, data) {
+			state.userInfo = data;
+		},
+		resetUser(state) {
+			state.userIdToken = "";
+			state.userInfo = {};
 		},
 	},
-	actions: {},
+	actions: {
+		async getUserInfo(commit, token) {
+			await axios
+				.get(`/api/user/${token}`)
+				.then((response) => {
+					commit("setUserIdToken", token);
+					commit("setUserInfo", response.data);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		},
+	},
 });

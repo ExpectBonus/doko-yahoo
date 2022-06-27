@@ -31,15 +31,13 @@ const router = new VueRouter({
 	routes,
 });
 
-router.beforeEach((to, from, next) => {
-	if (to.name !== "home" && !Object.keys(store.state.userInfo).length) {
+router.beforeEach(async (to, from, next) => {
+	if (to.name !== "home" && !store.state.userIdToken) {
 		// 認証前のユーザは問答無用でトップに飛ばす
 		next({ name: "home" });
 	} else {
 		next();
 	}
-
-	next();
 });
 
 export default router;
