@@ -109,6 +109,7 @@
 	</div>
 </template>
 <script>
+	import { mapState } from "vuex";
 	import { prefectures as prefs } from "../assets/prefectures.js";
 	import { regionPrefs } from "../assets/prefectures.js";
 	import JobSelector from "@/components/JobSelector.vue";
@@ -147,6 +148,7 @@
 			};
 		},
 		computed: {
+			...mapState(["userIdToken", "userInfo"]),
 			selectedWorkPrefsToStr() {
 				if (!this.selectedWorkPrefs) return ""; //都道府県が選ばれていない場合は即空白リターン
 				let str = this.selectedWorkPrefs.reduce((prefs, pref) => {
@@ -194,23 +196,29 @@
 					this.setErrorMsg();
 					return;
 				}
+				let params = {
+					username: this.username,
+					job: this.selectedJob,
+					born_pref: this.getPrefIndex(this.selectedBornPref),
+					first_pref: this.getPrefIndex(this.selectedWorkPrefs[0]),
+					second_pref: this.getPrefIndex(this.selectedWorkPrefs[1]),
+					third_pref: this.getPrefIndex(this.selectedWorkPrefs[2]),
+					hobbies: this.selectedHobbies,
+				};
 				await axios
 					.post("/api/user", {
-						provider_id: 1,
-						username: this.username,
-						job: this.selectedJob,
-						born_pref: this.getPrefIndex(this.selectedBornPref),
-						first_pref: this.getPrefIndex(this.selectedWorkPrefs[0]),
-						second_pref: this.getPrefIndex(this.selectedWorkPrefs[1]),
-						third_pref: this.getPrefIndex(this.selectedWorkPrefs[2]),
-						hobbies: this.selectedHobbies,
+						...params,
+						token: this.userIdToken,
 					})
 					.then(function (res) {
 						console.log(`user id: ${res.data}`);
+						this.$store.commit("setUserInfo", { ...params, id: res.data });
 						this.$router.push({ name: "map" });
 					})
 					.catch(function (err) {
 						console.log(err);
+						alert("プロフィールの登録に失敗しました");
+						this.$router.push({ name: home });
 					});
 			},
 			checkParams: function () {
