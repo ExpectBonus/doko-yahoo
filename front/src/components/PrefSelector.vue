@@ -26,6 +26,10 @@
 						:id="pref"
 						name="born"
 						:value="pref"
+						:disabled="
+							!selectedPrefs.includes(pref) &&
+							selectedPrefs.length == limitSelectablePrefecturesCount
+						"
 						v-model="selectedPrefs"
 					/>
 					<label :for="pref">
@@ -163,6 +167,10 @@
 		color: #ffffff;
 		background-color: #008277;
 		border-color: #008277;
+	}
+
+	input[type="checkbox"]:disabled + label {
+		color: #757575;
 	}
 
 	.modal-close {
