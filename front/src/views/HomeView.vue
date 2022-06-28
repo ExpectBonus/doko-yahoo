@@ -33,9 +33,9 @@
 			});
 		},
 		methods: {
-			handleCredentialResponse(response) {
-				this.$store.commit("setUserIdToken", response);
-				this.$router.push({ name: "profile" });
+			async handleCredentialResponse(response) {
+				await this.$store.dispatch("getUserInfo", response.credential);
+				this.$router.push({ name: "map" });
 			},
 		},
 	};
@@ -44,7 +44,6 @@
 <style scoped>
 	#home {
 		width: 100%;
-		max-width: 1024px;
 		min-height: 100vh;
 		min-height: 100dvh; /* for iOS */
 		display: flex;
