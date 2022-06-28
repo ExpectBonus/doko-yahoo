@@ -9,3 +9,5 @@ ADD ./web/uwsgi_params /etc/nginx/uwsgi_params
 RUN mkdir /var/www
 RUN mkdir /var/www/front
 RUN mkdir /var/www/static
+
+CMD ["nginx", "-g", "daemon off;"]

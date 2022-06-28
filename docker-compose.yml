@@ -15,6 +15,7 @@ services:
       - ./web/logs/nginx/:/var/log/nginx/
       - ./web/uwsgi_params:/etc/nginx/uwsgi_params
       - ./back/static:/var/www/static/
+      - ./front/dist:/var/www/front/
     depends_on:
       - back
 
