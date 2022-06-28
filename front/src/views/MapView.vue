@@ -62,6 +62,13 @@
 		},
 		computed: {
 			...mapState(["userInfo"]),
+			hobbiesArrayToString() {
+				if (!this.selectedHobbies.length) return "";
+				let str = this.selectedHobbies.reduce((acc, value) => {
+					return acc + `hobbies=${value}&`;
+				}, "?");
+				return str.slice(0, -1); //末尾の"&"を消す
+			},
 		},
 		mounted() {
 			this.getHeatMapData();
@@ -80,11 +87,7 @@
 		methods: {
 			async getHeatMapData() {
 				await axios
-					.get(`/api/heatmap/${this.selectedJob}`, {
-						params: {
-							hobbies: this.selectedHobbies,
-						},
-					})
+					.get(`/api/heatmap/${this.selectedJob}${this.hobbiesArrayToString}`)
 					.then((res) => {
 						if (res.status == 200) {
 							this.heatMapData = { ...res.data.data };
