@@ -44,7 +44,6 @@
 <style scoped>
 	#home {
 		width: 100%;
-		max-width: 1024px;
 		min-height: 100vh;
 		min-height: 100dvh; /* for iOS */
 		display: flex;
