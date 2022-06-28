@@ -4,6 +4,20 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+	// `createPersistedState()`でインスタンス作成。引数に設定を書く
+  plugins: [createPersistedState(
+    { // ストレージのキーを指定。デフォルトではvuex
+      key: 'dokoYahooVuex',
+      // 管理対象のステートを指定
+      paths: [
+        'userIdToken',
+        'userInfo'
+      ],
+      // ストレージの種類を指定する
+      storage: window.sessionStorage
+    }
+  )],
+
 	state: {
 		userIdToken: "",
 		userInfo: {},
