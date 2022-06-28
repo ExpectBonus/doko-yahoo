@@ -17,16 +17,34 @@ const routes = [
 		path: "/profile",
 		name: "profile",
 		component: ProfileView,
+		beforeEnter: (to, from, next) => {
+			if (!store.state.userIdToken) {
+				const sessionVuex = sessionStorage.getItem("dokoYahooVuex");
+				sessionVuex.userIdToken &&
+					store.commit("setUserIdToken", sessionVuex.userIdToken);
+				sessionVuex.userInfo &&
+					store.commit("setUserInfo", sessionVuex.userInfo);
+			}
+			store.state.userIdToken ? next() : next({ name: "home" });
+		},
 	},
 	{
 		path: "/map",
 		name: "map",
 		component: MapView,
 		beforeEnter: (to, from, next) => {
-			if (!store.state.userInfo) {
-				store.dispatch("getUserInfo", $store.state.userIdToken);
+			if (!store.state.userIdToken) {
+				const sessionVuex = sessionStorage.getItem("dokoYahooVuex");
+				sessionVuex.userIdToken &&
+					store.commit("setUserIdToken", sessionVuex.userIdToken);
+				sessionVuex.userInfo &&
+					store.commit("setUserInfo", sessionVuex.userInfo);
 			}
-			store.state.userInfo ? next() : next({ name: home });
+			if (store.state.userIdToken) {
+				store.state.userInfo.id ? next() : next({ name: "profile" });
+			} else {
+				next({ name: "home" });
+			}
 		},
 	},
 ];
@@ -35,15 +53,6 @@ const router = new VueRouter({
 	mode: "history",
 	base: process.env.BASE_URL,
 	routes,
-});
-
-router.beforeEach(async (to, from, next) => {
-	if (to.name !== "home" && !store.state.userIdToken) {
-		// 認証前のユーザは問答無用でトップに飛ばす
-		next({ name: "home" });
-	} else {
-		next();
-	}
 });
 
 export default router;
