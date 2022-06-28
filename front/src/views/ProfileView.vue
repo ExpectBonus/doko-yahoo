@@ -210,12 +210,12 @@
 						...params,
 						token: this.userIdToken,
 					})
-					.then(function (res) {
+					.then((res) => {
 						console.log(`user id: ${res.data}`);
 						this.$store.commit("setUserInfo", { ...params, id: res.data.id });
 						this.$router.push({ name: "map" });
 					})
-					.catch(function (err) {
+					.catch((err) => {
 						console.log(err);
 						alert("プロフィールの登録に失敗しました");
 						this.$router.push({ name: "home" });
