@@ -10,12 +10,15 @@ services:
     environment:
       TZ: "Asia/Tokyo"
     ports:
-      - 8000:8000
+      - 80:80
+      - 443:443
     volumes:
       - ./web/logs/nginx/:/var/log/nginx/
       - ./web/uwsgi_params:/etc/nginx/uwsgi_params
       - ./back/static:/var/www/static/
       - ./front/dist:/var/www/front/
+      - /etc/letsencrypt/live/doko-yahoo.tk/fullchain.pem:/etc/nginx/fullchain.pem
+      - /etc/letsencrypt/live/doko-yahoo.tk/privkey.pem:/etc/nginx/privkey.pem
     depends_on:
       - back
 
