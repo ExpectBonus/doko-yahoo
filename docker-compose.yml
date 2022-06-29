@@ -39,8 +39,8 @@ services:
       context: ./back
       dockerfile: Dockerfile
     command: "sh /server/start.sh"
-    ports:
-      - 5001:5001
+    expose:
+      - 5001
     volumes:
       - ./back:/server/
     environment:
